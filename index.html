@@ -884,7 +884,7 @@ const dictionary = {
     "ROSTO": "Pişirilmiş et yemeği.",
     "ROTOR": "Dönen parça.",
     "ROZET": "Yakaya takılan nişan.",
-    "RÖFLE": "Saçın bir kısmını açma işlemi.",
+        "RÖFLE": "Saçın bir kısmını açma işlemi.",
     "RÖTAR": "Gecikme.",
     "RÖTUŞ": "Düzeltme dokunuşu.",
     "RUBAİ": "Dört dizelik şiir türü.",
@@ -2029,7 +2029,7 @@ const dictionary = {
     "ZARTA": "Osmanlı'da bir gümüş para.",
     "ZATEN": "Esasen.",
     "ZAYIF": "Güçsüz, ince.",
-    "ZEBAT": "Dayanıklılık (lehçe).",
+        "ZEBAT": "Dayanıklılık (lehçe).",
     "ZEBUN": "Güçsüz, zayıf düşmüş.",
     "ZEBUR": "Hz. Davut'a indirilen kitap.",
     "ZECİR": "Zorlama.",
@@ -2169,13 +2169,18 @@ function showResultModal(won) {
     targetText.innerText = target;
     meaningText.innerText = dictionary[target] || "Anlam bulunamadı.";
 
-    // Kaybetme durumunda görseli göster
-    if (!won) {
-        resultImg.src = loseImages[0];
-        resultImg.style.display = 'block';
-    } else {
-        resultImg.style.display = 'none';
-    }
+ // Kaybetme durumunda görseli göster
+if (!won) {
+    // Listeden rastgele bir görsel seç
+    const randomImg = loseImages[Math.floor(Math.random() * loseImages.length)];
+    
+    // Seçilen görseli ekrana bas
+    resultImg.src = randomImg;
+    resultImg.style.display = 'block';
+} else {
+    resultImg.style.display = 'none';
+}
+
 
     modal.style.display = 'flex';
 }
