@@ -15,27 +15,126 @@
             --selected: #ffd700;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
-        body { background: var(--bg); color: black; margin: 0; padding: 0; font-family: sans-serif; width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; position: fixed; }
-        header { height: 40px; display: flex; align-items: center; justify-content: center; color: var(--selected); font-weight: bold; }
+        /* Tüm boşlukları sıfırla ve beyaz sızıntıları engelle */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            touch-action: manipulation; 
+        }
+
+        html {
+            background-color: var(--bg); /* Sayfa yüklenirken beyaz ekranı önler */
+            width: 100%;
+            height: 100%;
+        }
+
+        body { 
+            background: var(--bg); 
+            color: black; 
+            margin: 0; 
+            padding: 0; 
+            font-family: sans-serif; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            position: fixed; /* Kaydırmayı tamamen devre dışı bırakır */
+        }
+
+        header { 
+            height: 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: var(--selected); 
+            font-weight: bold; 
+            padding-top: env(safe-area-inset-top); /* Çentikli telefonlar için */
+        }
         
-        #game-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #game-area { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            width: 100%;
+        }
+
         .board-row { display: flex; gap: 5px; margin-bottom: 5px; }
-        .tile { width: 50px; height: 50px; background-color: var(--tile-empty); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: bold; color: #1a0b45; text-transform: uppercase; border: 2px solid transparent; }
+
+        .tile { 
+            width: 50px; 
+            height: 50px; 
+            background-color: var(--tile-empty); 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.6rem; 
+            font-weight: bold; 
+            color: #1a0b45; 
+            text-transform: uppercase; 
+            border: 2px solid transparent; 
+        }
         
-        .tile.active-selection { border: 3px solid var(--selected) !important; background-color: white !important; color: #1a0b45 !important; transform: scale(1.08); }
+        .tile.active-selection { 
+            border: 3px solid var(--selected) !important; 
+            background-color: white !important; 
+            color: #1a0b45 !important; 
+            transform: scale(1.08); 
+        }
+
         .tile[data-state="correct"] { background-color: var(--correct) !important; color: white; border: none; }
         .tile[data-state="present"] { background-color: var(--present) !important; color: white; border: none; }
         .tile[data-state="absent"] { background-color: var(--absent) !important; color: white; border: none; opacity: 0.4; }
 
-        #reset-area { height: 70px; display: flex; align-items: center; justify-content: center; gap: 60px; }
-        .action-btn { background: var(--selected); color: #1a0b45; border: none; padding: 20px 20px; border-radius: 3px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.2s; }
+        #reset-area { 
+            height: 70px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 60px; 
+        }
+
+        .action-btn { 
+            background: var(--selected); 
+            color: #1a0b45; 
+            border: none; 
+            padding: 15px 20px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+        }
+
         #submit-btn { background: #ffffff; }
         .action-btn:active { transform: scale(0.9); opacity: 0.8; }
 
-        #keyboard { background: rgba(0, 0, 0, 0.9); padding: 5px 10px 40px 5px; }
+        #keyboard { 
+            background: rgba(0, 0, 0, 0.9); 
+            padding: 5px 10px calc(15px + env(safe-area-inset-bottom)) 10px; /* Alttaki beyaz çizgiyi yok eder */
+            width: 100%;
+        }
+
         .kb-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 8px; }
-        .key { background-color: var(--key-bg); border: none; border-radius: 5px; color: white; font-size: 1rem; font-weight: bold; height: 50px; flex: 0.9; display: flex; align-items: center; justify-content: center; }
+
+        .key { 
+            background-color: var(--key-bg); 
+            border: none; 
+            border-radius: 5px; 
+            color: white; 
+            font-size: 1rem; 
+            font-weight: bold; 
+            height: 50px; 
+            flex: 0.9; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+
         .key.wide { flex: 2; background-color: #5d5d61; }
         .key[data-state="correct"] { background-color: var(--correct); }
         .key[data-state="present"] { background-color: var(--present); }
@@ -49,8 +148,17 @@
             background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; 
             flex-direction: column; padding: 30px; text-align: center;
         }
-        .modal-content { background: #2a1b55; padding: 25px; border-radius: 20px; border: 2px solid var(--selected); max-width: 400px; }
-        #modal-title { font-size: 1.5rem; margin-bottom: 10px; }
+
+        .modal-content { 
+            background: #2a1b55; 
+            padding: 25px; 
+            border-radius: 20px; 
+            border: 2px solid var(--selected); 
+            max-width: 400px; 
+            width: 90%;
+        }
+
+        #modal-title { font-size: 1.5rem; margin-bottom: 10px; color: white; }
         #target-word { font-size: 2rem; color: var(--selected); margin-bottom: 10px; letter-spacing: 3px; }
         #word-meaning { font-style: italic; color: #ccc; margin-bottom: 20px; line-height: 1.4; border-top: 1px solid #444; padding-top: 10px; }
         .close-btn { background: var(--selected); color: #1a0b45; border: none; padding: 12px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; }
@@ -58,31 +166,6 @@
 </head>
 <body>
 
-<header>KELİME OYUNU</header>
-<div id="msg"></div>
-
-<div id="game-area">
-    <div id="board">
-        </div>
-</div>
-
-<div id="reset-area">
-    <button id="reset-btn" class="action-btn" onclick="resetGame()">YENİ KELİME</button>
-    <button id="submit-btn" class="action-btn" onclick="handleSubmit()">GÖNDER</button>
-</div>
-
-<div id="keyboard">
-    </div>
-
-<div id="game-modal" class="modal">
-    <div class="modal-content">
-        <h2 id="modal-title"></h2>
-        <p>Kelime: <strong id="target-word"></strong></p>
-        <p id="word-meaning"></p>
-        <img id="result-image" src="" style="width: 150px; margin-top: 15px; display: none; border-radius: 8px;">
-        <button onclick="resetGame(); closeModal();">TEKRAR OYNA</button>
-    </div>
-</div>
 
 
 <script>
