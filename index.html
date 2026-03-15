@@ -41,11 +41,18 @@
             flex-direction: column; 
             overflow: hidden; 
             position: fixed;
-            botton: -1px;
+            botton: -10px;
             left: 0;
             top: 0;
         }
-         header { 
+         #keyboard { 
+            background: rgba(0, 0, 0, 1); 
+            /* Alt boşluğu 50px yapıp altına dev bir gölge ekliyoruz */
+            padding: 5px 10px 50px 10px; 
+            box-shadow: 0 50px 0 50px black; 
+         }
+         
+        header { 
             height: 40px; 
             display: flex; 
             align-items: center; 
