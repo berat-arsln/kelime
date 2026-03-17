@@ -33,5 +33,3 @@ self.addEventListener('activate', e => {
     })
   );
 });
-
-u
