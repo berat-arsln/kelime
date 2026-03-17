@@ -2398,6 +2398,13 @@ function updKy(h, d) {
 buildKeyboard();
 initGame();
 </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log("Çevrimdışı mod aktif!"))
+      .catch((err) => console.log("Hata:", err));
+  }
+</script>
 
 </body>
 </html>
