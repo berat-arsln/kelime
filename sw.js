@@ -2,9 +2,7 @@ const cacheName = 'kelime-oyunu-v1';
 // Buraya çevrimdışı olmasını istediğin tüm dosyaları yaz (örneğin resimler varsa onları da ekle)
 const assets = [
   './',
-  './index.html',
-  './style.css', // Eğer CSS dışarıdaysa
-  './script.js'  // Eğer JS dışarıdaysa
+  './index.html'
 ];
 
 // Dosyaları yükleme (Cache) - Güncellenmiş Halı
