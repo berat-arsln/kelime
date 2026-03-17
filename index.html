@@ -22,6 +22,28 @@
             padding: 0; 
             touch-action: manipulation; 
         }
+        .toast {
+    position: fixed;
+    top: -100px; /* Başlangıçta ekranın dışında */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffd700; /* Sarı renk */
+    color: #1a0b45;
+    padding: 15px 25px;
+    border-radius: 0 0 15px 15px; /* Alt köşeler yuvarlak */
+    font-weight: bold;
+    font-size: 1rem;
+    z-index: 10000;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: top 0.5s ease; /* İnme efekti */
+}
+
+.toast.show {
+    top: 0; /* Ekranın en tepesine iner */
+}
 
         html {
             background-color: #1a0b45 !important;
@@ -71,7 +93,6 @@
             width: 100%; /* İçeriğin tam yayılmasını sağlar */
         }
 
-
         .board-row { display: flex; gap: 5px; margin-bottom: 5px; }
 
         .tile { 
@@ -82,13 +103,26 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            font-size: 1.6rem; 
-            font-weight: bold; 
+            font-size: 1.6rem;
+            font-weight: 900; 
+            font-family: 'Arial Black', sans-serif; 
             color: #1a0b45; 
             text-transform: uppercase; 
             border: 2px solid transparent; 
         }
         
+           .active-selection { 
+    border: 3px solid var(--selected) !important;
+    background-color: rgba(255, 215, 0, 0.1) !important; 
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
         .tile.active-selection { 
             border: 3px solid var(--selected) !important; 
             background-color: white !important; 
@@ -105,7 +139,7 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 60px; 
+            gap: 40px; 
         }
 
         .action-btn { 
@@ -175,6 +209,7 @@
     </style>
 </head>
 <body>
+<div id="toast-notification" class="toast"></div>
 
 <header>KELİME OYUNU</header>
 <div id="msg"></div>
@@ -186,6 +221,7 @@
 
 <div id="reset-area">
     <button id="reset-btn" class="action-btn" onclick="resetGame()">YENİ KELİME</button>
+     <button id="hint-btn" class="action-btn" onclick="showHint()" style="background: #ffeb3b; font-size: 1.5rem; padding: 5px 10px;">🔎</button>
     <button id="submit-btn" class="action-btn" onclick="handleSubmit()">GÖNDER</button>
 </div>
 
@@ -201,7 +237,6 @@
         <button onclick="resetGame(); closeModal();">TEKRAR OYNA</button>
     </div>
 </div>
-
 
 <script>
 // Kelime Anlamları Sözlüğü (Örnek başlangıç, 1481 kelime için genişletilebilir yapı)
@@ -2216,6 +2251,15 @@ const loseImages = ["https://i.ibb.co/pBWP2LGt/nah2.jpg","https://i.ibb.co/r2rLz
 const w5 = Object.keys(dictionary);
 
 let target = "", curTile = 0, curRow = 0, isDone = false;
+let hintUsed = false; 
+const roastMessages = [
+    "Daha 5 harfli kelimeyi bulamıyorsun, bir de ipucu mu istiyorsun?",
+    "Beynin mi durdu yoksa hep mi böyleydin?",
+    "Sana ipucu değil, mucize lazım.",
+    "Sözlükte 'yetersiz' diye arat, belki kendini bulursun.",
+    "İpucu versem de bilebileceğinden emin değilim...",
+    "Buralarda yenisin galiba, bu kadar zorlanmamalısın."
+];
 
 function initGame() {
     target = w5[Math.floor(Math.random() * w5.length)].toUpperCase();
@@ -2264,8 +2308,57 @@ function st(id) {
     }
 }
 
+function showHint() {
+    if (hintUsed || isDone) {
+        if(hintUsed) showToast("Hakkını zaten kullandın!");
+        return;
+    }
+
+    hintUsed = true;
+    const btn = document.getElementById('hint-btn');
+    btn.style.opacity = "0.4";
+    btn.style.cursor = "not-allowed";
+
+    const chance = Math.random() * 100;
+    let textToShow = "";
+
+    if (chance < 60) {
+        // %60 Laf Sokma
+        textToShow = roastMessages[Math.floor(Math.random() * roastMessages.length)];
+    } else {
+        // %40 Gerçek İpucu
+        const meaning = dictionary[target] || "İpucu bulunamadı!";
+        textToShow = "İPUCU: " + meaning.substring(0, 45) + "...";
+    }
+
+    // ARTIK MESAJI BURADAN GÖNDERİYORUZ
+    showToast(textToShow);
+}
+
+// BU YENİ FONKSİYONU DA KODUN EN ALTINA EKLE
+function showToast(message) {
+    const toast = document.getElementById('toast-notification');
+    if(!toast) return; // Eğer HTML kısmını eklemediysen hata vermesin
+    
+    toast.innerText = message;
+    toast.classList.add('show');
+
+    // 10 saniye sonra gizle
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 10000);
+}
+
 function resetGame() {
-    initGame();
+    initGame(); // Senin mevcut fonksiyonun
+    
+    // İpucu butonunu sıfırlama
+    hintUsed = false;
+    const hBtn = document.getElementById('hint-btn');
+    if(hBtn) {
+        hBtn.style.opacity = "1";
+        hBtn.style.cursor = "pointer";
+    }
 }
 
 function handleSubmit() {
@@ -2299,10 +2392,8 @@ if (!won) {
     resultImg.style.display = 'none';
 }
 
-
     modal.style.display = 'flex';
 }
-
 
 function closeModal() {
     document.getElementById('game-modal').style.display = 'none';
@@ -2334,10 +2425,20 @@ function buildKeyboard() {
 
 function handleInput(val) {
     if(isDone) return;
+    
     if(val === 'SİL') {
-        document.getElementById('t' + curTile).innerText = "";
-        if(curTile > curRow * 5) st(curTile - 1);
+        const currentTileElement = document.getElementById('t' + curTile);
+        
+        // 1. Durum: Eğer şu anki kutuda bir harf varsa, sadece harfi sil, yerinde kal.
+        if (currentTileElement.innerText !== "") {
+            currentTileElement.innerText = "";
+        } 
+        // 2. Durum: Eğer şu anki kutu zaten boşsa ve satırın başına gelmediysek, bir öncekine geç.
+        else if (curTile > curRow * 5) {
+            st(curTile - 1); // Bir önceki kutuyu seçer
+        }
     } else {
+        // Harf ekleme kısmı (Burası aynı kalıyor)
         document.getElementById('t' + curTile).innerText = val;
         if(curTile < (curRow+1)*5-1) st(curTile + 1);
     }
@@ -2397,6 +2498,13 @@ function updKy(h, d) {
 // Başlat
 buildKeyboard();
 initGame();
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log("Çevrimdışı mod aktif!"))
+      .catch((err) => console.log("Hata:", err));
+  }
 </script>
 <script>
   if ('serviceWorker' in navigator) {
