@@ -93,6 +93,7 @@
             width: 100%; /* İçeriğin tam yayılmasını sağlar */
         }
 
+
         .board-row { display: flex; gap: 5px; margin-bottom: 5px; }
 
         .tile { 
@@ -237,6 +238,7 @@
         <button onclick="resetGame(); closeModal();">TEKRAR OYNA</button>
     </div>
 </div>
+
 
 <script>
 // Kelime Anlamları Sözlüğü (Örnek başlangıç, 1481 kelime için genişletilebilir yapı)
@@ -943,6 +945,7 @@ const dictionary = {
     "PLAZA": "İş merkezi binası.",
     "POKER": "Bir şans oyunu.",
     "POLAR": "Kutup ile ilgili; yumuşak kumaş.",
+    "PROJE": "Tasarı, plan.",
     "POLAT": "Çelik.",
     "POLEN": "Çiçek tozu.",
     "POLİP": "Mukoza şişkinliği; deniz canlısı.",
@@ -960,7 +963,6 @@ const dictionary = {
     "POTUR": "Büzgülü pantolon.",
     "POYRA": "Tekerlek merkezi.",
     "PRİMA": "Müzikte birinci ses; mükemmel.",
-    "PROJE": "Tasarı, plan.",
     "PROVA": "Ön deneme.",
     "PUFLA": "Yumuşak tüy.",
     "PULCU": "Pul koleksiyoncusu.",
@@ -2349,6 +2351,8 @@ function showToast(message) {
     }, 10000);
 }
 
+
+
 function resetGame() {
     initGame(); // Senin mevcut fonksiyonun
     
@@ -2360,6 +2364,7 @@ function resetGame() {
         hBtn.style.cursor = "pointer";
     }
 }
+
 
 function handleSubmit() {
     if(isDone) return;
@@ -2392,8 +2397,10 @@ if (!won) {
     resultImg.style.display = 'none';
 }
 
+
     modal.style.display = 'flex';
 }
+
 
 function closeModal() {
     document.getElementById('game-modal').style.display = 'none';
@@ -2443,6 +2450,7 @@ function handleInput(val) {
         if(curTile < (curRow+1)*5-1) st(curTile + 1);
     }
 }
+
 
 function checkRow() {
     let guess = "";
