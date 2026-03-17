@@ -2400,9 +2400,13 @@ initGame();
 </script>
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log("Çevrimdışı mod aktif!"))
-      .catch((err) => console.log("Hata:", err));
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('./sw.js').then(function(registration) {
+        console.log('Servis kaydı başarılı:', registration.scope);
+      }, function(err) {
+        console.log('Servis kaydı başarısız:', err);
+      });
+    });
   }
 </script>
 
