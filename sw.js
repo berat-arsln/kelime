@@ -1,4 +1,4 @@
-const cacheName = 'kelime-oyunu-v1';
+const cacheName = 'kelime-oyunu-v2';
 // Buraya çevrimdışı olmasını istediğin tüm dosyaları yaz (örneğin resimler varsa onları da ekle)
 const assets = [
   './',
