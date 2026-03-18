@@ -207,6 +207,30 @@
         #target-word { font-size: 2rem; color: var(--selected); margin-bottom: 10px; letter-spacing: 3px; }
         #word-meaning { font-style: italic; color: #ccc; margin-bottom: 20px; line-height: 1.4; border-top: 1px solid #444; padding-top: 10px; }
         .close-btn { background: var(--selected); color: #1a0b45; border: none; padding: 12px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+/* 1. Takla Atma Animasyonu (Flip) */
+@keyframes flipIn {
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(360deg); }
+}
+
+.flip {
+    animation: flipIn 0.6s ease;
+}
+
+/* 2. Titreme Animasyonu (Shake) */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.3s ease-in-out;
+    border: 2px solid #ff4d4d !important; /* Hata olduğunu belirtmek için kırmızı kenarlık */
+}
+
     </style>
 </head>
 <body>
@@ -2367,6 +2391,36 @@ function resetGame() {
 
 
 function handleSubmit() {
+    // 1. Mevcut satırdaki harf sayısını kontrol et
+    // (Senin kodunda o anki kutucuk sayısını veren değişkeni bulmalısın, genelde curTile % 5 gibi bir mantıktır)
+    
+    // Eğer 5 harf dolmadıysa titret:
+    const startTile = curRow * 5;
+    const endTile = startTile + 5;
+    let filledTiles = 0;
+
+    for (let i = startTile; i < endTile; i++) {
+        if (document.getElementById('t' + i).innerText !== "") {
+            filledTiles++;
+        }
+    }
+
+    if (filledTiles < 5) {
+        // Eksik harf var! O satırdaki kutuları titret
+        for (let i = startTile; i < endTile; i++) {
+            const tile = document.getElementById('t' + i);
+            tile.classList.add('shake');
+            
+            // 300ms sonra shake sınıfını kaldır
+            setTimeout(() => {
+                tile.classList.remove('shake');
+            }, 300);
+        }
+        return; // Fonksiyonu durdur, kontrol etme
+    }
+
+    // --- BURADAN SONRASI SENİN MEVCUT KODLARIN (Kelime doğru mu kontrolü) ---
+
     if(isDone) return;
     let full = true;
     for(let i=curRow*5; i<(curRow+1)*5; i++) if(document.getElementById('t'+i).innerText==="") full=false;
@@ -2472,11 +2526,28 @@ function checkRow() {
     }
 
     for(let i=0; i<5; i++) {
-        const tile = document.getElementById('t' + (curRow*5 + i));
-        tile.classList.remove('active-selection');
-        tile.setAttribute('data-state', res[i]);
-        updKy(guess[i], res[i]);
-    }
+    const tile = document.getElementById('t' + (curRow * 5 + i));
+    
+    // --- YENİ EKLENECEK KISIM (SIRAYLA TAKLA ATMA) ---
+    setTimeout(() => {
+        tile.classList.add('flip'); // Harfe takla attır
+        
+        // Renk değişimlerini animasyonun ortasında (0.3sn sonra) yaparsan daha şık durur
+        setTimeout(() => {
+            tile.classList.remove('active-selection');
+            tile.setAttribute('data-state', res[i]);
+            updKy(guess[i], res[i]);
+        }, 300);
+
+        // Animasyon bitince sınıfı temizle (bir sonraki tahmin için)
+        setTimeout(() => {
+            tile.classList.remove('flip');
+        }, 600);
+
+    }, i * 200); // i*200 sayesinde harfler soldan sağa sırayla döner
+    // ----------------------------------------------
+}
+
 
     if(guess === target) {
         isDone = true;
