@@ -236,10 +236,23 @@
 <body>
 <div id="toast-notification" class="toast"></div>
 
-<header>KELİME OYUNU</header>
+<header style="position: relative; width: 100%;">
+    <span style="position: absolute; left: 50%; transform: translateX(-50%);">KELİME OYUNU</span>
+    <button onclick="openStatsModal()" style="
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        font-size: 1.6rem;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+    ">📊</button>
+</header>
 <div id="msg"></div>
 
 <div id="game-area">
+    <div id="active-profile-label" style="color:#ffd700; font-weight:bold; font-size:0.85rem; margin-bottom:6px; letter-spacing:1px; opacity:0.8;">👤 GENEL</div>
     <div id="board">
         </div>
 </div>
@@ -252,21 +265,147 @@
 
 <div id="keyboard">
     </div>
+<div id="stats-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:9999; align-items:center; justify-content:center; flex-direction:column; padding:20px;">
+    <div style="background:#2a1b55; border:2px solid #ffd700; border-radius:20px; width:90%; max-width:400px; padding:20px;">
 
+        <!-- Başlık + Sekme Yönetimi -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span style="color:#ffd700; font-weight:bold; font-size:1.1rem;">📊 İSTATİSTİK</span>
+            <button onclick="addNewProfile()" style="background:#ffd700; color:#1a0b45; border:none; border-radius:8px; padding:5px 10px; font-weight:bold; cursor:pointer;">+ Ekle</button>
+        </div>
+
+        <!-- Sekmeler -->
+        <div id="stats-tabs" style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px;"></div>
+
+        <!-- İstatistik İçeriği -->
+        <div id="stats-content"></div>
+
+        <!-- Butonlar -->
+        <div id="stats-buttons" style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
+    <div style="display:flex; gap:10px; justify-content:center;">
+        <button onclick="closeStatsModal()" style="background:#555; color:white; border:none; border-radius:10px; padding:12px 30px; font-weight:bold; font-size:1rem; cursor:pointer;">KAPAT</button>
+        <button id="stats-play-btn" onclick="startWithProfile()" style="background:#ffd700; color:#1a0b45; border:none; border-radius:10px; padding:12px 30px; font-weight:bold; font-size:1rem; cursor:pointer;">OYNA</button>
+    </div>
+    <div style="display:flex; gap:10px; justify-content:center;">
+        <button id="reset-profile-btn" style="background:transparent; color:#ff6b6b; border:1px solid #ff6b6b; border-radius:10px; padding:7px 14px; font-weight:bold; font-size:0.68rem; cursor:pointer; user-select:none;">Profili Sıfırla</button>
+<button id="reset-all-btn" style="background:transparent; color:#ff6b6b; border:1px solid #ff6b6b; border-radius:10px; padding:7px 14px; font-weight:bold; font-size:0.68rem; cursor:pointer; user-select:none;">Tümünü Sıfırla</button>
+    </div>
+</div>
+
+    </div>
+</div>
 <div id="game-modal" class="modal">
     <div class="modal-content">
         <h2 id="modal-title"></h2>
         <p>Kelime: <strong id="target-word"></strong></p>
         <p id="word-meaning"></p>
         <img id="result-image" src="" style="width: 150px; margin-top: 15px; display: none; border-radius: 8px;">
-        <button onclick="resetGame(); closeModal();">TEKRAR OYNA</button>
+        <button class="close-btn" onclick="closeModal()">KAPAT</button>
     </div>
 </div>
 
 
 <script>
-// Kelime Anlamları Sözlüğü (Örnek başlangıç, 1481 kelime için genişletilebilir yapı)
+// Kelime Anlamları Sözlüğü (Örnek başlangıç, 1581 kelime için genişletilebilir yapı)
 const dictionary = {
+        "ABİDE": "Anıt, tarihi önemi olan kalıcı yapı.",
+      "ABİYE": "Özel gecelerde giyilen şık ve uzun elbise.",
+      "ABDAL": "Derviş, serseri, avare kimse.",
+      "ABANI": "El dokuması, kalın ve sık pamuklu bez türü.",
+      "ABONE": "Bir yayın organına düzenli para ödeyerek alan kimse.",
+     "ACABA": "Merak veya kuşku bildiren sözcük.",
+       "ACELE": "Bir işi çabuk yapma isteği veya durumu.",
+       "ACEMİ": "Bir işte deneyimi olmayan, toy kimse.",
+      "AÇGÖZ": "Obur, doymak bilmez, tamahkâr.",
+      "AÇLIK": "Yemek yeme ihtiyacı duyma hali, tokluk karşıtı.",
+      "AÇMAZ": "Çözümsüz durum, çıkmaz, ikilem.",
+       "ADALI": "Adada doğan veya yaşayan kimse.",
+       "ADETA": "Neredeyse, sanki anlamında kullanılan söz.",
+       "AFAKİ": "Gerçekle ilgisi bulunmayan, belirsiz, temelsiz.",
+       "AFSUN": "Büyü, sihir, tılsım.",
+       "AFYON": "Haşhaştan elde edilen uyuşturucu madde.",
+       "AHENK": "Uyum, düzen, armoni, ses uyumu.",
+       "AHALI": "Bir yerde oturan halk topluluğu.",
+       "AHKAM": "Hükümler; bilgiç tavırla söylenen boş söz.",
+      "AHMAK": "Akılsız, budala, aptal kimse.",
+      "AHŞAP": "Tahtadan yapılmış olan,  odundan yapılmış.",
+      "AİDAT": "Bir kuruluşa üyelik için ödenen düzenli para.",
+     "AJANS": "Haber toplayan ve dağıtan   kuruluş.",
+     "AKÇİL": "Soluk benizli, beyazımsı, sarışın.",
+     "AKİDE": "İnanç, itikat; bir tür sert şeker.",
+     "AKICI": "Kolayca akan, pürüzsüz, engelsiz.",
+     "AKRAN": "Yaş veya düzey bakımından eşit, yaşıt.",
+     "AKSAK": "Topallayan, düzgün yürüyemeyen.",
+     "AKSAM": "Bir bütünün parçaları, bölümler.",
+     "AKTİF": "Faal, çalışan, etkin.",
+     "AKTÖR": "Tiyatro veya sinemada erkek oyuncu.",
+     "AKŞAM": "Güneşin battığı zaman dilimi.",
+     "ALACA": "Birçok rengi olan, benekli, alacalı.",
+     "ALAKA": "İlgi, bağlantı, ilişki.",
+     "ALBÜM": "Fotoğraf veya müzik derlemesi.",
+     "ALGIN": "Hasta, keyifsiz, bitkin, dermansız.",
+     "ALICI": "Alan, satın alan kimse; sinyal alan alet.",
+     "ALİZE": "Tropikal bölgelerde düzenli olarak esen rüzgar.",
+     "ALKOL": "İçkilerde bulunan uçucu, yanıcı madde.",
+      "ALKIM": "Gökkuşağı (şiirsel kullanım).",
+     "ALLIK": "Yüz allığı, yanakları kırmızılaştıran makyaj malzemesi.",
+      "ALMAÇ": "Alıcı, reseptör, sinyal alan aygıt.",
+       "ALSAT": "Alıp satma işi, küçük ticaret.",
+       "ALTIN": "Sarı renkli, değerli maden.",
+        "ALVER": "Alışveriş, küçük ticaret (halk ağzı).",
+       "AMADE": "Hazır, hazırlanmış, elverişli durumda olan.",
+      "AMELE": "Kaba beden işi yapan işçi, rençper.",
+      "AMELİ": "Uygulamalı, pratik olan.",
+      "AMORF": "Belirli bir biçimi olmayan, şekilsiz.",
+       "AMPUL": "Elektrik lambası, cam ışık kaynağı.",
+       "AMPER": "Elektrik akımının şiddetini ölçen birim.",
+       "ANEMİ": "Kansızlık hastalığı.",
+       "ANLAM": "Bir sözcüğün zihinde uyandırdığı kavram, mana.",
+       "ANLIK": "Akıl yürütme yetisi, zihin, us.",
+       "ANANE": "Gelenek, örf, görenek.",
+       "ANDAÇ": "Hatıra, yadigâr, anı nesnesi.",
+       "ANGUT": "Ördekgillerden büyük bir su kuşu; argo olarak aptal.",
+       "ANİDE": "Birdenbire, ansızın, apansız.",
+       "ANKET": "Belirli bir konuda bilgi toplamak için yapılan soru dizisi.",
+       "ANONS": "Duyuru, ilan, bildiri.",
+      "ANTRE": "Bir yapının giriş bölümü, hol.",
+      "APTAL": "Anlayışı kıt, budala, akılsız.",
+      "ARABA": "Kara taşıtı, otomobil, at arabası.",
+     "ARACI": "Taraflar arasında köprü kuran kimse, vasıta.",
+     "ARAMA": "Bir şeyi bulmak için yapılan eylem.",
+      "ARAZİ": "Geniş toprak parçası, tarla, arsa.",
+     "ARIZA": "Bir aygıtın çalışmasını engelleyen bozukluk.",
+     "ARİFE": "Bir bayramdan önceki gün.",
+     "ARGAÇ": "Dokuma tezgahında enine geçirilen atkı ipliği.",
+     "ARKAÇ": "Dokuma tezgahında ipliği tutan araç.",
+     "ARSİN": "Eskiden kullanılan bir uzunluk ölçüsü birimi.",
+    "AROMA": "Yiyecek veya içeceğin güzel, özgün kokusu.",
+     "ARTIK": "Fazlalık, kalıntı; bundan böyle anlamında zarf.",
+     "ARTIM": "Artma, çoğalma, artış.",
+     "ASABİ": "Sinirli, gergin, öfkeli.",
+     "ASILI": "Havada veya bir yere bağlı olarak duran.",
+     "ASKER": "Orduya mensup kişi, er, nefer.",
+     "ASLAN": "Büyük ve güçlü yırtıcı kedi türü.",
+     "ASTAR": "Kumaşların iç yüzüne dikilen bez.",
+     "ASUDE": "Rahat, huzurlu, sakin.",
+     "AŞEVI": "Yoksullara yemek dağıtılan yer, aşhane.",
+     "AŞIRI": "Normalin çok üstünde, fazla, haddi aşan.",
+     "AŞINA": "Alışık, tanıdık, bildik.",
+     "AŞURE": "Kuru meyve ve tahıllarla yapılan geleneksel tatlı.",
+     "ATICI": "Ateşli silahla atış yapan kimse.",
+     "ATLET": "Spor yarışmalarına katılan kimse, sporcu.",
+     "ATLAS": "Parlak ipekli kumaş; harita kitabı.",
+     "AVANS": "Bir ücretin önceden ödenen bölümü.",
+     "AVARE": "Amaçsızca başıboş gezen kimse.",
+     "AVDET": "Geri dönüş, geri gelme.",
+     "AVLAK": "Av hayvanlarının bulunduğu yer.",
+     "AYLIK": "Her ay verilen ücret, maaş.",
+     "AYRAN": "Yoğurt ve suyla yapılan serinletici içecek.",
+     "AZADE": "Özgür, serbest, bağımsız.",
+     "AZAMİ": "En yüksek, en fazla, maksimum.",
+    "AZGIN": "Aşırı öfkeli, coşkun, dizginlenemez.",
+    "AZMAN": "Aşırı büyümüş, iri, kocaman.",
+    "AZRAK": "Az bulunan, nadir, ender.",
     "ADALE": "Vücutta kas dokusundan oluşan organ, kas.",
     "ADRES": "Bir kimsenin oturduğu yer veya bir kuruluşun bulunduğu yer.",
     "AHBAP": "Kendisiyle yakın ilişki kurulan, sevilen kimse.",
@@ -2348,11 +2487,11 @@ function showHint() {
     const chance = Math.random() * 100;
     let textToShow = "";
 
-    if (chance < 60) {
-        // %60 Laf Sokma
+    if (chance < 65) {
+        // %65 Laf Sokma
         textToShow = roastMessages[Math.floor(Math.random() * roastMessages.length)];
     } else {
-        // %40 Gerçek İpucu
+        // %35 Gerçek İpucu
         const meaning = dictionary[target] || "İpucu bulunamadı!";
         textToShow = "İPUCU: " + meaning.substring(0, 45) + "...";
     }
@@ -2432,25 +2571,24 @@ function showResultModal(won) {
     const title = document.getElementById('modal-title');
     const targetText = document.getElementById('target-word');
     const meaningText = document.getElementById('word-meaning');
-    const resultImg = document.getElementById('result-image'); // Görsel elementi
+    const resultImg = document.getElementById('result-image');
 
     title.innerText = won ? "TEBRİKLER! 🎉" : "MAALESEF BİLEMEDİN!";
     title.style.color = won ? "var(--correct)" : "#ff4444";
     targetText.innerText = target;
     meaningText.innerText = dictionary[target] || "Anlam bulunamadı.";
 
- // Kaybetme durumunda görseli göster
-if (!won) {
-    // Listeden rastgele bir görsel seç
-    const randomImg = loseImages[Math.floor(Math.random() * loseImages.length)];
-    
-    // Seçilen görseli ekrana bas
-    resultImg.src = randomImg;
-    resultImg.style.display = 'block';
-} else {
-    resultImg.style.display = 'none';
-}
+    if (!won) {
+        const randomImg = loseImages[Math.floor(Math.random() * loseImages.length)];
+        resultImg.src = randomImg;
+        resultImg.style.display = 'block';
+    } else {
+        resultImg.style.display = 'none';
+    }
 
+    // İstatistiği kaydet
+    const guessIndex = won ? curRow : 6;
+    recordGameResult(won, guessIndex);
 
     modal.style.display = 'flex';
 }
@@ -2458,6 +2596,7 @@ if (!won) {
 
 function closeModal() {
     document.getElementById('game-modal').style.display = 'none';
+    openStatsModal(true);
 }
 
 // Klavye Tanımlama
@@ -2573,6 +2712,261 @@ function updKy(h, d) {
         }
     });
 }
+// ===== İSTATİSTİK SİSTEMİ =====
+let activeProfile = "GENEL";
+function updateProfileLabel() {
+    const label = document.getElementById('active-profile-label');
+    if (label) label.innerText = '👤 ' + activeProfile;
+}
+let isPostGame = false;
+let lastGuessNumber = null;
+
+function getStats() {
+    const data = localStorage.getItem('kelimeStats');
+    if (!data) return { profiles: { "GENEL": { played: 0, won: 0, streak: 0, bestStreak: 0, distribution: [0,0,0,0,0,0,0] } } };
+    return JSON.parse(data);
+}
+
+function saveStats(data) {
+    localStorage.setItem('kelimeStats', JSON.stringify(data));
+}
+
+function openStatsModal(postGame = false) {
+    isPostGame = postGame;
+    const playBtn = document.getElementById('stats-play-btn');
+    playBtn.style.display = postGame ? 'none' : 'block';
+    renderTabs();
+    renderStatsContent();
+    document.getElementById('stats-modal').style.display = 'flex';
+    initResetButtons();
+}
+
+function closeStatsModal() {
+    document.getElementById('stats-modal').style.display = 'none';
+    if (isPostGame) {
+        isPostGame = false;
+        lastGuessNumber = null;
+        activeProfile = "GENEL";
+        updateProfileLabel();
+        resetGame();
+    }
+}
+
+function renderTabs() {
+    const data = getStats();
+    const tabsDiv = document.getElementById('stats-tabs');
+    tabsDiv.innerHTML = '';
+    Object.keys(data.profiles).forEach(name => {
+        const btn = document.createElement('button');
+        btn.innerText = name;
+        btn.style.cssText = `
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 2px solid ${activeProfile === name ? '#ffd700' : '#555'};
+            background: ${activeProfile === name ? '#ffd700' : 'transparent'};
+            color: ${activeProfile === name ? '#1a0b45' : 'white'};
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.85rem;
+            user-select: none;
+        `;
+
+        let holdTimer = null;
+        let isHolding = false;
+
+        btn.addEventListener('mousedown', () => {
+            isHolding = false;
+            if (name !== 'GENEL') {
+                holdTimer = setTimeout(() => {
+                    isHolding = true;
+                    const sifre = prompt("Şifreyi gir:");
+if (sifre !== "82732") { alert("Yanlış şifre!"); return; }
+if (confirm(`"${name}" profilini silmek istiyor musun? Bu işlem geri alınamaz!`)) {
+                        const data = getStats();
+                        delete data.profiles[name];
+                        saveStats(data);
+                        if (activeProfile === name) activeProfile = 'GENEL';
+                        renderTabs();
+                        renderStatsContent();
+                    }
+                }, 1000);
+            }
+        });
+        btn.addEventListener('mouseup', () => clearTimeout(holdTimer));
+        btn.addEventListener('mouseleave', () => clearTimeout(holdTimer));
+        btn.addEventListener('click', () => {
+            if (!isHolding) {
+                activeProfile = name;
+                renderTabs();
+                renderStatsContent();
+            }
+        });
+
+        if (name !== 'GENEL') {
+            btn.addEventListener('touchstart', () => {
+                isHolding = false;
+                holdTimer = setTimeout(() => {
+                    isHolding = true;
+                    const sifre = prompt("Şifreyi gir:");
+if (sifre !== "82732") { alert("Yanlış şifre!"); return; }
+if (confirm(`"${name}" profilini silmek istiyor musun? Bu işlem geri alınamaz!`)) {
+                        const data = getStats();
+                        delete data.profiles[name];
+                        saveStats(data);
+                        if (activeProfile === name) activeProfile = 'GENEL';
+                        renderTabs();
+                        renderStatsContent();
+                    }
+                }, 1000);
+            });
+            btn.addEventListener('touchend', () => {
+                clearTimeout(holdTimer);
+                if (!isHolding) {
+                    activeProfile = name;
+                    renderTabs();
+                    renderStatsContent();
+                }
+            });
+        } else {
+            btn.addEventListener('touchend', () => {
+                activeProfile = name;
+                renderTabs();
+                renderStatsContent();
+            });
+        }
+
+        tabsDiv.appendChild(btn);
+    });
+}
+
+function renderStatsContent() {
+    const data = getStats();
+    const profile = data.profiles[activeProfile] || { played: 0, won: 0, distribution: [0,0,0,0,0,0,0] };
+    const winRate = profile.played > 0 ? Math.round((profile.won / profile.played) * 100) : 0;
+    const contentDiv = document.getElementById('stats-content');
+    const maxVal = Math.max(...profile.distribution, 1);
+    const distLabels = ['1', '2', '3', '4', '5', '6', '❌'];
+
+    let barsHTML = distLabels.map((label, i) => {
+        const val = profile.distribution[i] || 0;
+        const width = Math.max((val / maxVal) * 100, 8);
+        const isHighlight = isPostGame && lastGuessNumber === i;
+        const barColor = isHighlight ? '#46b5a3' : '#ffd700';
+        return `
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span style="color:white; width:20px; text-align:right; font-size:0.9rem;">${label}</span>
+                <div style="flex:1; background:#1a0b45; border-radius:4px; height:22px;">
+                    <div style="width:${width}%; background:${barColor}; height:100%; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:6px; min-width:28px; box-sizing:border-box;">
+                        <span style="color:#1a0b45; font-weight:bold; font-size:0.8rem;">${val}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    contentDiv.innerHTML = `
+        <div style="display:flex; justify-content:space-around; margin-bottom:16px;">
+            <div style="text-align:center;">
+                <div style="color:#ffd700; font-size:1.8rem; font-weight:bold;">${profile.played}</div>
+                <div style="color:#ccc; font-size:0.75rem;">Toplam</div>
+            </div>
+            <div style="text-align:center;">
+                <div style="color:#ffd700; font-size:1.8rem; font-weight:bold;">${winRate}%</div>
+                <div style="color:#ccc; font-size:0.75rem;">Kazanma Oranı</div>
+            </div>
+            <div style="text-align:center;">
+                <div style="color:#ffd700; font-size:1.8rem; font-weight:bold;">${profile.streak || 0}</div>
+                <div style="color:#ccc; font-size:0.75rem;">Seri</div>
+            </div>
+            <div style="text-align:center;">
+                <div style="color:#ffd700; font-size:1.8rem; font-weight:bold;">${profile.bestStreak || 0}</div>
+                <div style="color:#ccc; font-size:0.75rem;">En İyi Seri</div>
+            </div>
+        </div>
+        <div style="color:#ffd700; font-weight:bold; font-size:0.9rem; margin-bottom:8px;">TAHMİN DAĞILIMI</div>
+        ${barsHTML}
+    `;
+}
+
+function addNewProfile() {
+    const name = prompt("Profil adını gir:");
+    if (!name || name.trim() === '') return;
+    const trimmed = name.trim().toUpperCase();
+    const data = getStats();
+    if (data.profiles[trimmed]) { alert("Bu isimde profil zaten var!"); return; }
+    data.profiles[trimmed] = { played: 0, won: 0, distribution: [0,0,0,0,0,0,0] };
+    saveStats(data);
+    activeProfile = trimmed;
+    renderTabs();
+    renderStatsContent();
+}
+
+function startWithProfile() {
+    document.getElementById('stats-modal').style.display = 'none';
+    const label = document.getElementById('active-profile-label');
+    if (label) label.innerText = '👤 ' + activeProfile;
+}
+function recordGameResult(won, guessIndex) {
+    const data = getStats();
+    if (!data.profiles[activeProfile]) {
+        data.profiles[activeProfile] = { played: 0, won: 0, streak: 0, bestStreak: 0, distribution: [0,0,0,0,0,0,0] };
+    }
+    const profile = data.profiles[activeProfile];
+    profile.played++;
+    if (won) {
+        profile.won++;
+        profile.streak = (profile.streak || 0) + 1;
+        if (profile.streak > (profile.bestStreak || 0)) profile.bestStreak = profile.streak;
+    } else {
+        profile.streak = 0;
+    }
+    profile.distribution[guessIndex] = (profile.distribution[guessIndex] || 0) + 1;
+    saveStats(data);
+    lastGuessNumber = guessIndex;
+}
+
+function resetActiveProfile() {
+    const sifre = prompt("Şifreyi gir:");
+    if (sifre !== "82732") { alert("Yanlış şifre!"); return; }
+    if (!confirm(`"${activeProfile}" profilinin istatistikleri sıfırlansın mı?`)) return;
+    const data = getStats();
+    data.profiles[activeProfile] = { played: 0, won: 0, streak: 0, bestStreak: 0, distribution: [0,0,0,0,0,0,0] };
+    saveStats(data);
+    renderStatsContent();
+}
+
+function resetAllProfiles() {
+    const sifre = prompt("Şifreyi gir:");
+    if (sifre !== "82732") { alert("Yanlış şifre!"); return; }
+    if (!confirm("Tüm profillerin istatistikleri sıfırlansın mı? Bu işlem geri alınamaz!")) return;
+    const data = getStats();
+    Object.keys(data.profiles).forEach(name => {
+        data.profiles[name] = { played: 0, won: 0, streak: 0, bestStreak: 0, distribution: [0,0,0,0,0,0,0] };
+    });
+    saveStats(data);
+    renderStatsContent();
+}
+function initResetButtons() {
+    const btnProfile = document.getElementById('reset-profile-btn');
+    const btnAll = document.getElementById('reset-all-btn');
+
+    function addHold(btn, action) {
+        let timer = null;
+        let holding = false;
+
+        btn.addEventListener('mousedown', () => { holding = false; timer = setTimeout(() => { holding = true; action(); }, 1000); });
+        btn.addEventListener('mouseup', () => clearTimeout(timer));
+        btn.addEventListener('mouseleave', () => clearTimeout(timer));
+        btn.addEventListener('touchstart', () => { holding = false; timer = setTimeout(() => { holding = true; action(); }, 1000); });
+        btn.addEventListener('touchend', () => clearTimeout(timer));
+        btn.addEventListener('click', (e) => { if (holding) e.preventDefault(); });
+    }
+
+    addHold(btnProfile, resetActiveProfile);
+    addHold(btnAll, resetAllProfiles);
+}
+
+// ===== İSTATİSTİK SİSTEMİ SONU =====
 
 // Başlat
 buildKeyboard();
