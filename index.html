@@ -1202,7 +1202,7 @@ const dictionary = {
     "ROSTO": "Pişirilmiş et yemeği.",
     "ROTOR": "Dönen parça.",
     "ROZET": "Yakaya takılan nişan.",
-        "RÖFLE": "Saçın bir kısmını açma işlemi.",
+    "RÖFLE": "Saçın bir kısmını açma işlemi.",
     "RÖTAR": "Gecikme.",
     "RÖTUŞ": "Düzeltme dokunuşu.",
     "RUBAİ": "Dört dizelik şiir türü.",
@@ -2347,7 +2347,7 @@ const dictionary = {
     "ZARTA": "Osmanlı'da bir gümüş para.",
     "ZATEN": "Esasen.",
     "ZAYIF": "Güçsüz, ince.",
-        "ZEBAT": "Dayanıklılık (lehçe).",
+    "ZEBAT": "Dayanıklılık (lehçe).",
     "ZEBUN": "Güçsüz, zayıf düşmüş.",
     "ZEBUR": "Hz. Davut'a indirilen kitap.",
     "ZECİR": "Zorlama.",
@@ -2475,7 +2475,7 @@ function st(id) {
 
 function showHint() {
     if (hintUsed || isDone) {
-        if(hintUsed) showToast("Hakkını zaten kullandın!");
+        if(hintUsed) showToast("Yavaş lan kaç tane alıyon!");
         return;
     }
 
@@ -2487,11 +2487,11 @@ function showHint() {
     const chance = Math.random() * 100;
     let textToShow = "";
 
-    if (chance < 65) {
-        // %65 Laf Sokma
+    if (chance < 80) {
+        // %80 Laf Sokma
         textToShow = roastMessages[Math.floor(Math.random() * roastMessages.length)];
     } else {
-        // %35 Gerçek İpucu
+        // %20 Gerçek İpucu
         const meaning = dictionary[target] || "İpucu bulunamadı!";
         textToShow = "İPUCU: " + meaning.substring(0, 45) + "...";
     }
@@ -2508,10 +2508,10 @@ function showToast(message) {
     toast.innerText = message;
     toast.classList.add('show');
 
-    // 10 saniye sonra gizle
+    // 8 saniye sonra gizle
     setTimeout(() => {
         toast.classList.remove('show');
-    }, 10000);
+    }, 8000);
 }
 
 
@@ -2573,7 +2573,7 @@ function showResultModal(won) {
     const meaningText = document.getElementById('word-meaning');
     const resultImg = document.getElementById('result-image');
 
-    title.innerText = won ? "TEBRİKLER! 🎉" : "MAALESEF BİLEMEDİN!";
+    title.innerText = won ? "KUTLARIZZ! 🎉" : "MAALESEF BİLEMEDİN!";
     title.style.color = won ? "var(--correct)" : "#ff4444";
     targetText.innerText = target;
     meaningText.innerText = dictionary[target] || "Anlam bulunamadı.";
