@@ -1,8 +1,9 @@
-const cacheName = 'kelime-oyunu-v10';
-// Buraya çevrimdışı olmasını istediğin tüm dosyaları yaz (örneğin resimler varsa onları da ekle)
+const cacheName = 'kelime-oyunu-v11';
 const assets = [
   './',
-  './index.html'
+  './index.html',
+  './sounds/kazan.mp3',
+  './sounds/kaybet.mp3'
 ];
 
 // Dosyaları yükleme (Cache) - Güncellenmiş Halı
