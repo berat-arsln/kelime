@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V4.9 (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V10 (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -290,6 +290,10 @@
         <button id="reset-profile-btn" style="background:transparent; color:#ff6b6b; border:1px solid #ff6b6b; border-radius:10px; padding:7px 14px; font-weight:bold; font-size:0.68rem; cursor:pointer; user-select:none;">Profili Sıfırla</button>
 <button id="reset-all-btn" style="background:transparent; color:#ff6b6b; border:1px solid #ff6b6b; border-radius:10px; padding:7px 14px; font-weight:bold; font-size:0.68rem; cursor:pointer; user-select:none;">Tümünü Sıfırla</button>
     </div>
+     <div style="display:flex; gap:10px; justify-content:center; margin-top:6px;">
+    <button onclick="showExportCode()" style="background:transparent; color:#46b5a3; border:1px solid #46b5a3; border-radius:10px; padding:7px 14px; font-weight:bold; font-size:0.68rem; cursor:pointer;">📤 Yedek Kodu Al</button>
+    <button onclick="showImportCode()" style="background:transparent; color:#46b5a3; border:1px solid #46b5a3; border-radius:10px; padding:7px 14px; font-weight:bold; font-size:0.68rem; cursor:pointer;">📥 Kod ile Yükle</button>
+  </div>
 </div>
 
     </div>
@@ -308,36 +312,36 @@
 <script>
 // Kelime Anlamları Sözlüğü (Örnek başlangıç, 1581 kelime için genişletilebilir yapı)
 const dictionary = {
-        "ABİDE": "Anıt, tarihi önemi olan kalıcı yapı.",
-      "ABİYE": "Özel gecelerde giyilen şık ve uzun elbise.",
-      "ABDAL": "Derviş, serseri, avare kimse.",
-      "ABANI": "El dokuması, kalın ve sık pamuklu bez türü.",
-      "ABONE": "Bir yayın organına düzenli para ödeyerek alan kimse.",
-     "ACABA": "Merak veya kuşku bildiren sözcük.",
-       "ACELE": "Bir işi çabuk yapma isteği veya durumu.",
-       "ACEMİ": "Bir işte deneyimi olmayan, toy kimse.",
-      "AÇGÖZ": "Obur, doymak bilmez, tamahkâr.",
-      "AÇLIK": "Yemek yeme ihtiyacı duyma hali, tokluk karşıtı.",
-      "AÇMAZ": "Çözümsüz durum, çıkmaz, ikilem.",
-       "ADALI": "Adada doğan veya yaşayan kimse.",
-       "ADETA": "Neredeyse, sanki anlamında kullanılan söz.",
-       "AFAKİ": "Gerçekle ilgisi bulunmayan, belirsiz, temelsiz.",
-       "AFSUN": "Büyü, sihir, tılsım.",
-       "AFYON": "Haşhaştan elde edilen uyuşturucu madde.",
-       "AHENK": "Uyum, düzen, armoni, ses uyumu.",
-       "AHALI": "Bir yerde oturan halk topluluğu.",
-       "AHKAM": "Hükümler; bilgiç tavırla söylenen boş söz.",
-      "AHMAK": "Akılsız, budala, aptal kimse.",
-      "AHŞAP": "Tahtadan yapılmış olan,  odundan yapılmış.",
-      "AİDAT": "Bir kuruluşa üyelik için ödenen düzenli para.",
-     "AJANS": "Haber toplayan ve dağıtan   kuruluş.",
-     "AKÇİL": "Soluk benizli, beyazımsı, sarışın.",
-     "AKİDE": "İnanç, itikat; bir tür sert şeker.",
-     "AKICI": "Kolayca akan, pürüzsüz, engelsiz.",
-     "AKRAN": "Yaş veya düzey bakımından eşit, yaşıt.",
-     "AKSAK": "Topallayan, düzgün yürüyemeyen.",
-     "AKSAM": "Bir bütünün parçaları, bölümler.",
-     "AKTİF": "Faal, çalışan, etkin.",
+    "ABİDE": "Anıt, tarihi önemi olan kalıcı yapı.",
+    "ABİYE": "Özel gecelerde giyilen şık ve uzun elbise.",
+    "ABDAL": "Derviş, serseri, avare kimse.",
+    "ABANI": "El dokuması, kalın ve sık pamuklu bez türü.",
+    "ABONE": "Bir yayın organına düzenli para ödeyerek alan kimse.",
+    "ACABA": "Merak veya kuşku bildiren sözcük.",
+    "ACELE": "Bir işi çabuk yapma isteği veya durumu.",
+    "ACEMİ": "Bir işte deneyimi olmayan, toy kimse.",
+    "AÇGÖZ": "Obur, doymak bilmez, tamahkâr.",
+    "AÇLIK": "Yemek yeme ihtiyacı duyma hali, tokluk karşıtı.",
+    "AÇMAZ": "Çözümsüz durum, çıkmaz, ikilem.",
+    "ADALI": "Adada doğan veya yaşayan kimse.",
+    "ADETA": "Neredeyse, sanki anlamında kullanılan söz.",
+    "AFAKİ": "Gerçekle ilgisi bulunmayan, belirsiz, temelsiz.",
+    "AFSUN": "Büyü, sihir, tılsım.",
+    "AFYON": "Haşhaştan elde edilen uyuşturucu madde.",
+    "AHENK": "Uyum, düzen, armoni, ses uyumu.",
+    "AHALİ": "Bir yerde oturan halk topluluğu.",
+    "AHKAM": "Hükümler; bilgiç tavırla söylenen boş söz.",
+    "AHMAK": "Akılsız, budala, aptal kimse.",
+    "AHŞAP": "Tahtadan yapılmış olan,  odundan yapılmış.",
+    "AİDAT": "Bir kuruluşa üyelik için ödenen düzenli para.",
+    "AJANS": "Haber toplayan ve dağıtan   kuruluş.",
+    "AKÇİL": "Soluk benizli, beyazımsı, sarışın.",
+    "AKİDE": "İnanç, itikat; bir tür sert şeker.",
+    "AKICI": "Kolayca akan, pürüzsüz, engelsiz.",
+    "AKRAN": "Yaş veya düzey bakımından eşit, yaşıt.",
+    "AKSAK": "Topallayan, düzgün yürüyemeyen.",
+    "AKSAM": "Bir bütünün parçaları, bölümler.",
+    "AKTİF": "Faal, çalışan, etkin.",
      "AKTÖR": "Tiyatro veya sinemada erkek oyuncu.",
      "AKŞAM": "Güneşin battığı zaman dilimi.",
      "ALACA": "Birçok rengi olan, benekli, alacalı.",
@@ -2945,6 +2949,72 @@ function resetAllProfiles() {
     });
     saveStats(data);
     renderStatsContent();
+}
+    function showExportCode() {
+    const data = getStats();
+    const json = JSON.stringify(data);
+    const code = btoa(encodeURIComponent(json));
+
+    const box = document.createElement('div');
+    box.id = 'code-box';
+    box.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    box.innerHTML = `
+        <div style="background:#2a1b55;border:2px solid #ffd700;border-radius:20px;padding:24px;width:90%;max-width:400px;text-align:center;">
+            <div style="color:#ffd700;font-weight:bold;font-size:1rem;margin-bottom:12px;">📤 YEDEK KODUN</div>
+            <div style="color:#aaa;font-size:0.75rem;margin-bottom:12px;">Bu kodu bir yere kaydet. Tarayıcı verileri silinirse bu kodla istatistiklerini geri yükleyebilirsin.</div>
+            <textarea id="export-code-area" readonly style="width:100%;height:100px;background:#1a0b45;color:#46b5a3;border:1px solid #46b5a3;border-radius:10px;padding:10px;font-size:0.7rem;resize:none;word-break:break-all;"></textarea>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;">
+                <button id="copy-code-btn" style="background:#46b5a3;color:white;border:none;border-radius:10px;padding:10px 20px;font-weight:bold;cursor:pointer;">📋 Kopyala</button>
+                <button onclick="document.getElementById('code-box').remove()" style="background:#555;color:white;border:none;border-radius:10px;padding:10px 20px;font-weight:bold;cursor:pointer;">KAPAT</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(box);
+    document.getElementById('export-code-area').value = code;
+    document.getElementById('copy-code-btn').onclick = function() {
+        const area = document.getElementById('export-code-area');
+        area.select();
+        area.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(area.value)
+            .then(() => alert('Kod kopyalandı!'))
+            .catch(() => { area.select(); alert('Kodu manuel kopyala!'); });
+    };
+}
+
+function showImportCode() {
+    const box = document.createElement('div');
+    box.id = 'import-box';
+    box.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    box.innerHTML = `
+        <div style="background:#2a1b55;border:2px solid #ffd700;border-radius:20px;padding:24px;width:90%;max-width:400px;text-align:center;">
+            <div style="color:#ffd700;font-weight:bold;font-size:1rem;margin-bottom:12px;">📥 KOD İLE YÜKLE</div>
+            <div style="color:#aaa;font-size:0.75rem;margin-bottom:12px;">Daha önce aldığın yedek kodunu buraya yapıştır.</div>
+            <textarea id="import-code-input" style="width:100%;height:100px;background:#1a0b45;color:#46b5a3;border:1px solid #46b5a3;border-radius:10px;padding:10px;font-size:0.7rem;resize:none;word-break:break-all;" placeholder="Kodu buraya yapıştır..."></textarea>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;">
+                <button onclick="loadFromCode()" style="background:#ffd700;color:#1a0b45;border:none;border-radius:10px;padding:10px 20px;font-weight:bold;cursor:pointer;">YÜKLE</button>
+                <button onclick="document.getElementById('import-box').remove()" style="background:#555;color:white;border:none;border-radius:10px;padding:10px 20px;font-weight:bold;cursor:pointer;">KAPAT</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(box);
+}
+
+function loadFromCode() {
+    const code = document.getElementById('import-code-input').value.trim();
+    if (!code) { alert('Kod boş!'); return; }
+    try {
+        const json = decodeURIComponent(atob(code));
+        const data = JSON.parse(json);
+        if (!data.profiles) { alert('Geçersiz kod!'); return; }
+        saveStats(data);
+        activeProfile = 'GENEL';
+        renderTabs();
+        renderStatsContent();
+        document.getElementById('import-box').remove();
+        alert('İstatistikler başarıyla yüklendi!');
+    } catch(err) {
+        alert('Kod okunamadı, geçersiz!');
+    }
 }
 function initResetButtons() {
     const btnProfile = document.getElementById('reset-profile-btn');
