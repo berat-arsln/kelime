@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V10 (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V11 (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -2592,7 +2592,9 @@ function showResultModal(won) {
 
     // İstatistiği kaydet
     const guessIndex = won ? curRow : 6;
-    recordGameResult(won, guessIndex);
+recordGameResult(won, guessIndex);
+if (won) playWinSound();
+else playLoseSound();
 
     modal.style.display = 'flex';
 }
@@ -2716,6 +2718,20 @@ function updKy(h, d) {
         }
     });
 }
+    // ===== SES SİSTEMİ =====
+function playWinSound() {
+    const audio = new Audio('./sounds/kazan.mp3');
+    audio.volume = 0.7;
+    audio.play();
+}
+
+function playLoseSound() {
+    const audio = new Audio('./sounds/kaybet.mp3');
+    audio.volume = 0.7;
+    audio.play();
+}
+// ===== SES SİSTEMİ SONU =====
+    
 // ===== İSTATİSTİK SİSTEMİ =====
 let activeProfile = "GENEL";
 function updateProfileLabel() {
