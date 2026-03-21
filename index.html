@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V14.3 (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V14.4 (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -2726,14 +2726,46 @@ function updKy(h, d) {
         }
     });
 }
+    // ===== AYARLAR SİSTEMİ =====
+let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+
+function openSettingsModal() {
+    updateSoundToggle();
+    document.getElementById('settings-modal').style.display = 'flex';
+}
+
+function closeSettingsModal() {
+    document.getElementById('settings-modal').style.display = 'none';
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem('soundEnabled', soundEnabled);
+    updateSoundToggle();
+}
+
+function updateSoundToggle() {
+    const toggle = document.getElementById('sound-toggle');
+    const knob = document.getElementById('sound-toggle-knob');
+    if (soundEnabled) {
+        toggle.style.background = '#ffd700';
+        knob.style.left = '26px';
+    } else {
+        toggle.style.background = '#555';
+        knob.style.left = '2px';
+    }
+}
+// ===== AYARLAR SİSTEMİ SONU =====
+    
     // ===== SES SİSTEMİ =====
 function playWinSound() {
+    if (!soundEnabled) return;
     const audio = new Audio('./sounds/kazan.mp3');
     audio.volume = 1;
     audio.play();
 }
-
 function playLoseSound() {
+    if (!soundEnabled) return;
     const audio = new Audio('./sounds/kaybet.mp3');
     audio.volume = 0.4;
     audio.play();
