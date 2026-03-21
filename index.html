@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V15.1  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V15.2  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -6063,11 +6063,11 @@ function showHint() {
     const chance = Math.random() * 100;
     let textToShow = "";
 
-    if (chance < 80) {
-        // %80 Laf Sokma
+    if (chance < 99.99) {
+        // %99.99 Laf Sokma
         textToShow = roastMessages[Math.floor(Math.random() * roastMessages.length)];
     } else {
-        // %20 Gerçek İpucu
+        // %00.01 Gerçek İpucu
         const meaning = dictionary[target] || "İpucu bulunamadı!";
         textToShow = "İPUCU: " + meaning.substring(0, 45) + "...";
     }
