@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V14.9  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V15  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -17,10 +17,14 @@
 
         /* Tüm boşlukları sıfırla ve beyaz sızıntıları engelle */
         * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            touch-action: manipulation; 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
         }
         .toast {
     position: fixed;
