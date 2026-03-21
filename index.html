@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V14.5  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V14.6  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -220,6 +220,9 @@
         height: 100dvh;
         max-width: 600px;
         margin: 0 auto;
+        transform: translateX(-50%);
+        position: fixed;
+    }
     }
 
     header { 
@@ -407,11 +410,27 @@
 
     /* MASAÜSTÜ */
     @media (min-width: 600px) {
-        body { 
-            border-left: 1px solid #2a1b55;
-            border-right: 1px solid #2a1b55;
-        }
+    body { 
+        border-left: 1px solid #2a1b55;
+        border-right: 1px solid #2a1b55;
+        left: 50%;
+        transform: translateX(-50%);
+        position: fixed;
+        width: 600px;
     }
+    #keyboard {
+        max-width: 600px;
+    }
+}
+
+@media (orientation: landscape) and (min-width: 600px) {
+    body {
+        width: min(600px, 100vw);
+        left: 50%;
+        transform: translateX(-50%);
+        position: fixed;
+    }
+        }
 
     /* ANİMASYONLAR */
     @keyframes flipIn {
