@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V14.4 (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V14.5  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -163,75 +163,277 @@
             padding: 5px 10px calc(15px + env(safe-area-inset-bottom)) 10px; /* Alttaki beyaz çizgiyi yok eder */
             width: 100%;
         }
+<style>
+    :root {
+        --bg: #1a0b45;
+        --tile-empty: #b0a4d4;
+        --correct: #46b5a3;
+        --present: #f2a93b;
+        --absent: #3a3a3c;
+        --key-bg: #4a4a4e;
+        --selected: #ffd700;
+    }
 
-        .kb-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 8px; }
+    * { 
+        box-sizing: border-box; 
+        margin: 0; 
+        padding: 0; 
+        touch-action: manipulation; 
+    }
 
-        .key { 
-            background-color: var(--key-bg); 
-            border: none; 
-            border-radius: 5px; 
-            color: white; 
-            font-size: 1rem; 
-            font-weight: bold; 
-            height: 50px; 
-            flex: 0.9; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+    .toast {
+        position: fixed;
+        top: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ffd700;
+        color: #1a0b45;
+        padding: 15px 25px;
+        border-radius: 0 0 15px 15px;
+        font-weight: bold;
+        font-size: 1rem;
+        z-index: 10000;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        transition: top 0.5s ease;
+    }
+
+    .toast.show {
+        top: 0;
+    }
+
+    html, body {
+        background-color: #1a0b45 !important;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overscroll-behavior: none;
+    }
+
+    body { 
+        display: flex; 
+        flex-direction: column; 
+        overflow: hidden; 
+        height: 100dvh;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    header { 
+        height: 44px;
+        min-height: 44px;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        color: var(--selected); 
+        font-weight: bold;
+        padding-top: env(safe-area-inset-top);
+        flex-shrink: 0;
+    }
+
+    #msg { 
+        height: 28px;
+        min-height: 28px;
+        text-align: center; 
+        font-weight: bold; 
+        color: var(--selected);
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    #game-area { 
+        flex: 1; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; 
+        width: 100%;
+        min-height: 0;
+        padding: 4px 0;
+    }
+
+    #active-profile-label {
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+    }
+
+    .board-row { 
+        display: flex; 
+        gap: 4px; 
+        margin-bottom: 4px; 
+    }
+
+    .tile { 
+        width: clamp(36px, 10vw, 52px);
+        height: clamp(36px, 10vw, 52px);
+        background-color: var(--tile-empty); 
+        border-radius: 8px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+        font-weight: 900; 
+        font-family: 'Arial Black', sans-serif; 
+        color: #1a0b45; 
+        text-transform: uppercase; 
+        border: 2px solid transparent; 
+    }
+
+    .active-selection { 
+        border: 3px solid var(--selected) !important;
+        background-color: rgba(255, 215, 0, 0.1) !important; 
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; }
+        100% { opacity: 1; }
+    }
+
+    .tile.active-selection { 
+        border: 3px solid var(--selected) !important; 
+        background-color: white !important; 
+        color: #1a0b45 !important; 
+        transform: scale(1.08); 
+    }
+
+    .tile[data-state="correct"] { background-color: var(--correct) !important; color: white; border: none; }
+    .tile[data-state="present"] { background-color: var(--present) !important; color: white; border: none; }
+    .tile[data-state="absent"] { background-color: var(--absent) !important; color: white; border: none; opacity: 0.4; }
+
+    #reset-area { 
+        height: 56px;
+        min-height: 56px;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 30px;
+        flex-shrink: 0;
+    }
+
+    .action-btn { 
+        background: var(--selected); 
+        color: #1a0b45; 
+        border: none; 
+        padding: 10px 18px; 
+        border-radius: 8px; 
+        font-weight: bold; 
+        font-size: 0.95rem; 
+        cursor: pointer; 
+        transition: all 0.2s; 
+    }
+
+    #submit-btn { background: #ffffff; }
+    .action-btn:active { transform: scale(0.9); opacity: 0.8; }
+
+    #keyboard { 
+        background: rgba(0, 0, 0, 1); 
+        padding: 6px 6px calc(10px + env(safe-area-inset-bottom)) 6px;
+        width: 100%;
+        flex-shrink: 0;
+        box-shadow: 0 30px 0 30px black;
+    }
+
+    .kb-row { 
+        display: flex; 
+        justify-content: center; 
+        gap: 4px; 
+        margin-bottom: 6px; 
+    }
+
+    .key { 
+        background-color: var(--key-bg); 
+        border: none; 
+        border-radius: 5px; 
+        color: white; 
+        font-size: clamp(0.7rem, 2.5vw, 1rem);
+        font-weight: bold; 
+        height: clamp(38px, 6vh, 50px);
+        flex: 0.9; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        cursor: pointer;
+    }
+
+    .key.wide { flex: 2; background-color: #5d5d61; }
+    .key[data-state="correct"] { background-color: var(--correct); }
+    .key[data-state="present"] { background-color: var(--present); }
+    .key[data-state="absent"] { opacity: 0.2; background-color: #222; }
+
+    /* MODAL */
+    #game-modal {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; 
+        flex-direction: column; padding: 20px; text-align: center;
+    }
+
+    .modal-content { 
+        background: #2a1b55; 
+        padding: 20px; 
+        border-radius: 20px; 
+        border: 2px solid var(--selected); 
+        max-width: 400px; 
+        width: 90%;
+    }
+
+    #modal-title { font-size: 1.4rem; margin-bottom: 10px; color: white; }
+    #target-word { font-size: 1.8rem; color: var(--selected); margin-bottom: 10px; letter-spacing: 3px; }
+    #word-meaning { font-style: italic; color: #ccc; margin-bottom: 16px; line-height: 1.4; border-top: 1px solid #444; padding-top: 10px; font-size: 0.9rem; }
+    .close-btn { background: var(--selected); color: #1a0b45; border: none; padding: 12px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+
+    /* YATAY MOD */
+    @media (orientation: landscape) and (max-height: 500px) {
+        header { height: 32px; min-height: 32px; font-size: 0.85rem; }
+        #msg { height: 20px; min-height: 20px; font-size: 0.75rem; }
+        #reset-area { height: 40px; min-height: 40px; gap: 20px; }
+        .action-btn { padding: 6px 12px; font-size: 0.8rem; }
+        .tile { 
+            width: clamp(28px, 7vh, 40px); 
+            height: clamp(28px, 7vh, 40px); 
+            border-radius: 5px;
+            font-size: clamp(0.9rem, 2.5vh, 1.2rem);
         }
+        .board-row { gap: 3px; margin-bottom: 3px; }
+        .key { height: clamp(28px, 5vh, 38px); font-size: 0.7rem; }
+        .kb-row { gap: 3px; margin-bottom: 4px; }
+        #keyboard { padding: 4px 6px 8px 6px; }
+        #active-profile-label { font-size: 0.7rem; margin-bottom: 2px; }
+    }
 
-        .key.wide { flex: 2; background-color: #5d5d61; }
-        .key[data-state="correct"] { background-color: var(--correct); }
-        .key[data-state="present"] { background-color: var(--present); }
-        .key[data-state="absent"] { opacity: 0.2; background-color: #222; }
-
-        #msg { height: 35px; text-align: center; font-weight: bold; color: var(--selected); }
-
-        /* MODAL GÜNCELLEME */
-        #game-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; 
-            flex-direction: column; padding: 30px; text-align: center;
+    /* MASAÜSTÜ */
+    @media (min-width: 600px) {
+        body { 
+            border-left: 1px solid #2a1b55;
+            border-right: 1px solid #2a1b55;
         }
+    }
 
-        .modal-content { 
-            background: #2a1b55; 
-            padding: 25px; 
-            border-radius: 20px; 
-            border: 2px solid var(--selected); 
-            max-width: 400px; 
-            width: 90%;
-        }
+    /* ANİMASYONLAR */
+    @keyframes flipIn {
+        0% { transform: rotateX(0deg); }
+        100% { transform: rotateX(360deg); }
+    }
 
-        #modal-title { font-size: 1.5rem; margin-bottom: 10px; color: white; }
-        #target-word { font-size: 2rem; color: var(--selected); margin-bottom: 10px; letter-spacing: 3px; }
-        #word-meaning { font-style: italic; color: #ccc; margin-bottom: 20px; line-height: 1.4; border-top: 1px solid #444; padding-top: 10px; }
-        .close-btn { background: var(--selected); color: #1a0b45; border: none; padding: 12px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; }
-/* 1. Takla Atma Animasyonu (Flip) */
-@keyframes flipIn {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(360deg); }
-}
+    .flip { animation: flipIn 0.6s ease; }
 
-.flip {
-    animation: flipIn 0.6s ease;
-}
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-5px); }
+        100% { transform: translateX(0); }
+    }
 
-/* 2. Titreme Animasyonu (Shake) */
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
-
-.shake {
-    animation: shake 0.3s ease-in-out;
-    border: 2px solid #ff4d4d !important; /* Hata olduğunu belirtmek için kırmızı kenarlık */
-}
-
-    </style>
+    .shake {
+        animation: shake 0.3s ease-in-out;
+        border: 2px solid #ff4d4d !important;
+    }
+ </style>
 </head>
 <body>
 <div id="toast-notification" class="toast"></div>
