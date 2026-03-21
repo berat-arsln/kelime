@@ -1,4 +1,4 @@
-const cacheName = 'kelime-oyunu-v14.7';
+const cacheName = 'kelime-oyunu-v14.8';
 const assets = [
   './',
   './index.html',
