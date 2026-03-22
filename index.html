@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V16  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V16.1  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -539,15 +539,18 @@
 <script>
     // --‐------ KELİME LİSTESİ------------//
 let dictionary = {};
-
 async function loadDictionary() {
     try {
         const response = await fetch('./words.json');
+        if (!response.ok) throw new Error('Dosya bulunamadı');
         dictionary = await response.json();
+        console.log('Sözlük yüklendi:', Object.keys(dictionary).length, 'kelime');
     } catch(err) {
         console.error('Sözlük yüklenemedi:', err);
     }
-}  // ----------KELİME LİSTESİ SONU ------------//
+}
+    
+    // ----------KELİME LİSTESİ SONU ------------//
 
 const loseImages = ["https://i.ibb.co/pBWP2LGt/nah2.jpg","https://i.ibb.co/r2rLzttG/goril.jpg","https://i.ibb.co/FbwZfS4P/images-1.jpg","https://i.makeagif.com/media/9-01-2021/oPiDnx.gif"];
 
@@ -1301,6 +1304,8 @@ function initResetButtons() {
 // Başlat
 buildKeyboard();
 loadDictionary().then(() => {
+    initGame();
+}).catch(() => {
     initGame();
 });
 </script>
