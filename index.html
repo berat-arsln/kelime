@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V15.3  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V16  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -1300,7 +1300,9 @@ function initResetButtons() {
 
 // Başlat
 buildKeyboard();
-initGame();
+loadDictionary().then(() => {
+    initGame();
+});
 </script>
 <script>
   if ('serviceWorker' in navigator) {
