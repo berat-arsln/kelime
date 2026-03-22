@@ -1,7 +1,8 @@
-const cacheName = 'kelime-oyunu-v15.3';
+const cacheName = 'kelime-oyunu-v12';
 const assets = [
   './',
   './index.html',
+  './words.json',
   './sounds/kazan.mp3',
   './sounds/kaybet.mp3'
 ];
