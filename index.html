@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KELİME OYUNU - V16.2  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V16.3  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -545,11 +545,11 @@ let dictionary = {};
         const response = await fetch('./words.json');
         if (!response.ok) throw new Error('HTTP hata: ' + response.status);
         dictionary = await response.json();
-        alert('Yüklendi: ' + Object.keys(dictionary).length + ' kelime');
+        w5 = Object.keys(dictionary);
     } catch(err) {
-        alert('HATA: ' + err.message);
+        console.error('Sözlük yüklenemedi:', err);
     }
-}
+    }
     
     // ----------KELİME LİSTESİ SONU ------------//
 
