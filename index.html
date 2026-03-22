@@ -539,14 +539,15 @@
 <script>
     // --‐------ KELİME LİSTESİ------------//
 let dictionary = {};
-async function loadDictionary() {
+
+    async function loadDictionary() {
     try {
         const response = await fetch('./words.json');
-        if (!response.ok) throw new Error('Dosya bulunamadı');
+        if (!response.ok) throw new Error('HTTP hata: ' + response.status);
         dictionary = await response.json();
-        console.log('Sözlük yüklendi:', Object.keys(dictionary).length, 'kelime');
+        alert('Yüklendi: ' + Object.keys(dictionary).length + ' kelime');
     } catch(err) {
-        console.error('Sözlük yüklenemedi:', err);
+        alert('HATA: ' + err.message);
     }
 }
     
