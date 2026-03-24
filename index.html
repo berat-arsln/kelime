@@ -25,7 +25,7 @@
   window.firebaseSet = set;
   window.firebaseGet = get;
     </script>
-    <title>KELİME OYUNU - V17  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V17.1  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -1113,6 +1113,7 @@ function renderTabs() {
             if (name !== 'GENEL') {
                 holdTimer = setTimeout(() => {
                     isHolding = true;
+                    clearTimeout(holdTimer);
                     showPasswordPrompt(() => {
                         if (!confirm(`"${name}" profilini silmek istiyor musun? Bu işlem geri alınamaz!`)) return;
                         const d = getStats();
@@ -1137,10 +1138,11 @@ function renderTabs() {
         });
 
         if (name !== 'GENEL') {
-            btn.addEventListener('touchstart', () => {
-                isHolding = false;
-                holdTimer = setTimeout(() => {
-                    isHolding = true;
+            btn.addEventListener('touchstart', (e) => {
+    e.stopPropagation();
+    isHolding = false;
+    holdTimer = setTimeout(() => {
+                    clearTimeout(holdTimer);
                     showPasswordPrompt(() => {
                         if (!confirm(`"${name}" profilini silmek istiyor musun? Bu işlem geri alınamaz!`)) return;
                         const d = getStats();
