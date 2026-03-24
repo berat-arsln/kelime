@@ -25,7 +25,7 @@
   window.firebaseSet = set;
   window.firebaseGet = get;
     </script>
-    <title>KELİME OYUNU - V16.8  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V16.99  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -1015,10 +1015,14 @@ let lastGuessNumber = null;
 
 function getStats() {
     const data = localStorage.getItem('kelimeStats');
-    if (!data) return { profiles: { "1GENEL": { played: 0, won: 0, streak: 0, bestStreak: 0, distribution: [0,0,0,0,0,0,0] } } };
-    return JSON.parse(data);
+    if (!data) return { 
+        profileOrder: ["GENEL"],
+        profiles: { "GENEL": { played: 0, won: 0, streak: 0, bestStreak: 0, distribution: [0,0,0,0,0,0,0] } } 
+    };
+    const parsed = JSON.parse(data);
+    if (!parsed.profileOrder) parsed.profileOrder = ["GENEL", ...Object.keys(parsed.profiles).filter(k => k !== "GENEL")];
+    return parsed;
 }
-
 function saveStats(data) {
     localStorage.setItem('kelimeStats', JSON.stringify(data));
     syncToFirebase(data);
@@ -1078,7 +1082,9 @@ function closeStatsModal() {
 
 function renderTabs() {
     const data = getStats();
-    const tabsDiv = document.getElementById('stats-tabs');
+    const order = data.profileOrder || ["GENEL", ...Object.keys(data.profiles).filter(k => k !== "GENEL")];
+order.forEach(name => {
+    if (!data.profiles[name]) return;
     tabsDiv.innerHTML = '';
     Object.keys(data.profiles).forEach(name => {
         const btn = document.createElement('button');
@@ -1107,7 +1113,8 @@ function renderTabs() {
     if (!confirm(`"${name}" profilini silmek istiyor musun? Bu işlem geri alınamaz!`)) return;
     const data = getStats();
     delete data.profiles[name];
-    saveStats(data);
+data.profileOrder = (data.profileOrder || []).filter(n => n !== name);
+saveStats(data);
     if (activeProfile === name) activeProfile = 'GENEL';
     renderTabs();
     renderStatsContent();
@@ -1216,12 +1223,14 @@ function addNewProfile() {
     const trimmed = name.trim().toUpperCase();
     const data = getStats();
     if (data.profiles[trimmed]) { alert("Bu isimde profil zaten var!"); return; }
-    data.profiles[trimmed] = { played: 0, won: 0, distribution: [0,0,0,0,0,0,0] };
+    data.profiles[trimmed] = { played: 0, won: 0, streak: 0, bestStreak: 0, distribution: [0,0,0,0,0,0,0] };
+    if (!data.profileOrder) data.profileOrder = ["GENEL"];
+    data.profileOrder.push(trimmed);
     saveStats(data);
     activeProfile = trimmed;
     renderTabs();
     renderStatsContent();
-}
+    }
 
 function startWithProfile() {
     document.getElementById('stats-modal').style.display = 'none';
