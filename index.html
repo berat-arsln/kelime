@@ -25,7 +25,7 @@
   window.firebaseSet = set;
   window.firebaseGet = get;
     </script>
-    <title>KELİME OYUNU - V16.9.2  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V17  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -1085,11 +1085,12 @@ function closeStatsModal() {
 
 function renderTabs() {
     const data = getStats();
-    const order = data.profileOrder || ["GENEL", ...Object.keys(data.profiles).filter(k => k !== "GENEL")];
-order.forEach(name => {
-    if (!data.profiles[name]) return;
+    const tabsDiv = document.getElementById('stats-tabs');
     tabsDiv.innerHTML = '';
-    Object.keys(data.profiles).forEach(name => {
+    const order = data.profileOrder || ["GENEL", ...Object.keys(data.profiles).filter(k => k !== "GENEL")];
+    
+    order.forEach(name => {
+        if (!data.profiles[name]) return;
         const btn = document.createElement('button');
         btn.innerText = name;
         btn.style.cssText = `
@@ -1109,19 +1110,19 @@ order.forEach(name => {
 
         btn.addEventListener('mousedown', () => {
             isHolding = false;
-            if (name !== '1GENEL') {
+            if (name !== 'GENEL') {
                 holdTimer = setTimeout(() => {
                     isHolding = true;
                     showPasswordPrompt(() => {
-    if (!confirm(`"${name}" profilini silmek istiyor musun? Bu işlem geri alınamaz!`)) return;
-    const data = getStats();
-    delete data.profiles[name];
-data.profileOrder = (data.profileOrder || []).filter(n => n !== name);
-saveStats(data);
-    if (activeProfile === name) activeProfile = 'GENEL';
-    renderTabs();
-    renderStatsContent();
-});
+                        if (!confirm(`"${name}" profilini silmek istiyor musun? Bu işlem geri alınamaz!`)) return;
+                        const d = getStats();
+                        delete d.profiles[name];
+                        d.profileOrder = (d.profileOrder || []).filter(n => n !== name);
+                        saveStats(d);
+                        if (activeProfile === name) activeProfile = 'GENEL';
+                        renderTabs();
+                        renderStatsContent();
+                    });
                 }, 1000);
             }
         });
@@ -1135,20 +1136,21 @@ saveStats(data);
             }
         });
 
-        if (name !== '1GENEL') {
+        if (name !== 'GENEL') {
             btn.addEventListener('touchstart', () => {
                 isHolding = false;
                 holdTimer = setTimeout(() => {
                     isHolding = true;
                     showPasswordPrompt(() => {
-           if (!confirm(`"${name}" profilini silmek istiyor musun? Bu işlem geri alınamaz!`)) return;
-           const data = getStats();
-           delete data.profiles[name];
-           saveStats(data);
-           if (activeProfile === name) activeProfile = '1GENEL';
-           renderTabs();
-           renderStatsContent();
-});
+                        if (!confirm(`"${name}" profilini silmek istiyor musun? Bu işlem geri alınamaz!`)) return;
+                        const d = getStats();
+                        delete d.profiles[name];
+                        d.profileOrder = (d.profileOrder || []).filter(n => n !== name);
+                        saveStats(d);
+                        if (activeProfile === name) activeProfile = 'GENEL';
+                        renderTabs();
+                        renderStatsContent();
+                    });
                 }, 1000);
             });
             btn.addEventListener('touchend', () => {
@@ -1169,7 +1171,7 @@ saveStats(data);
 
         tabsDiv.appendChild(btn);
     });
-}
+        }
 
 function renderStatsContent() {
     const data = getStats();
