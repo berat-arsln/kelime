@@ -25,7 +25,7 @@
   window.firebaseSet = set;
   window.firebaseGet = get;
     </script>
-    <title>KELİME OYUNU - V16.7  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V16.8  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -1015,7 +1015,7 @@ let lastGuessNumber = null;
 
 function getStats() {
     const data = localStorage.getItem('kelimeStats');
-    if (!data) return { profiles: { "GENEL": { played: 0, won: 0, streak: 0, bestStreak: 0, distribution: [0,0,0,0,0,0,0] } } };
+    if (!data) return { profiles: { "1GENEL": { played: 0, won: 0, streak: 0, bestStreak: 0, distribution: [0,0,0,0,0,0,0] } } };
     return JSON.parse(data);
 }
 
@@ -1100,7 +1100,7 @@ function renderTabs() {
 
         btn.addEventListener('mousedown', () => {
             isHolding = false;
-            if (name !== 'GENEL') {
+            if (name !== '1GENEL') {
                 holdTimer = setTimeout(() => {
                     isHolding = true;
                     showPasswordPrompt(() => {
@@ -1125,7 +1125,7 @@ function renderTabs() {
             }
         });
 
-        if (name !== 'GENEL') {
+        if (name !== '1GENEL') {
             btn.addEventListener('touchstart', () => {
                 isHolding = false;
                 holdTimer = setTimeout(() => {
@@ -1135,7 +1135,7 @@ function renderTabs() {
            const data = getStats();
            delete data.profiles[name];
            saveStats(data);
-           if (activeProfile === name) activeProfile = 'GENEL';
+           if (activeProfile === name) activeProfile = '1GENEL';
            renderTabs();
            renderStatsContent();
 });
@@ -1325,7 +1325,7 @@ function loadFromCode() {
         const data = JSON.parse(json);
         if (!data.profiles) { alert('Geçersiz kod!'); return; }
         saveStats(data);
-        activeProfile = 'GENEL';
+        activeProfile = '1GENEL';
         renderTabs();
         renderStatsContent();
         document.getElementById('import-box').remove();
