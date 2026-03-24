@@ -3,6 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDCHSHWiFNEzdJeFZIWmpa-Mp57pSQ-xaU",
+    authDomain: "kelime-oyunu-3507f.firebaseapp.com",
+    databaseURL: "https://kelime-oyunu-3507f-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "kelime-oyunu-3507f",
+    storageBucket: "kelime-oyunu-3507f.firebasestorage.app",
+    messagingSenderId: "131395290034",
+    appId: "1:131395290034:web:424fefa4e34d11a44bdaab"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  window.firebaseDB = db;
+  window.firebaseRef = ref;
+  window.firebaseSet = set;
+  window.firebaseGet = get;
+    </script>
     <title>KELİME OYUNU - V16.5  (Sözlük Destekli)</title>
     <style>
         :root {
