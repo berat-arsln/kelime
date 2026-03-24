@@ -25,7 +25,7 @@
   window.firebaseSet = set;
   window.firebaseGet = get;
     </script>
-    <title>KELİME OYUNU - V16.99  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V16.9.1  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -296,8 +296,8 @@
     }
 
     .tile { 
-        width: clamp(36px, 10vw, 52px);
-        height: clamp(36px, 10vw, 52px);
+        width: clamp(43px, 12vw, 63px);
+        height: clamp(43px, 12vw, 63px);
         background-color: var(--tile-empty); 
         border-radius: 8px; 
         display: flex; 
@@ -921,11 +921,11 @@ function showPasswordPrompt(onSuccess) {
     box.innerHTML = `
         <div style="background:#2a1b55;border:2px solid #ffd700;border-radius:20px;padding:24px;width:90%;max-width:360px;text-align:center;">
             <div style="color:#ffd700;font-weight:bold;font-size:1.1rem;margin-bottom:16px;">🔒 ŞİFRE GEREKLİ</div>
-            <input id="password-input" type="password" placeholder="Şifreyi gir..." style="width:100%;padding:12px;border-radius:10px;border:2px solid #ffd700;background:#1a0b45;color:white;font-size:1rem;text-align:center;outline:none;margin-bottom:8px;user-select:text;-webkit-user-select:text;">
+            <input id="password-input" type="password" placeholder="Şifreyi gir..." style="width:100%;padding:12px;border-radius:10px;border:2px solid #ffd700;background:#1a0b45;color:white;font-size:1rem;text-align:center;outline:none;margin-bottom:8px;user-select:text;-webkit-user-select:text;touch-action:auto;">
             <div id="password-error" style="color:#ff4444;font-size:0.8rem;height:20px;margin-bottom:8px;"></div>
             <div style="display:flex;gap:10px;justify-content:center;">
-                <button onclick="document.getElementById('password-box').remove()" style="background:#555;color:white;border:none;border-radius:10px;padding:12px 24px;font-weight:bold;cursor:pointer;">VAZGEÇ</button>
-                <button id="password-confirm-btn" style="background:#ffd700;color:#1a0b45;border:none;border-radius:10px;padding:12px 24px;font-weight:bold;cursor:pointer;">TAMAM</button>
+                <button id="password-cancel-btn" style="background:#555;color:white;border:none;border-radius:10px;padding:12px 24px;font-weight:bold;cursor:pointer;touch-action:manipulation;">VAZGEÇ</button>
+                <button id="password-confirm-btn" style="background:#ffd700;color:#1a0b45;border:none;border-radius:10px;padding:12px 24px;font-weight:bold;cursor:pointer;touch-action:manipulation;">TAMAM</button>
             </div>
         </div>
     `;
@@ -935,15 +935,18 @@ function showPasswordPrompt(onSuccess) {
 
     const input = document.getElementById('password-input');
     const confirmBtn = document.getElementById('password-confirm-btn');
+    const cancelBtn = document.getElementById('password-cancel-btn');
 
+    confirmBtn.addEventListener('touchend', (e) => { e.preventDefault(); e.stopPropagation(); checkPassword(); });
     confirmBtn.addEventListener('click', checkPassword);
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') checkPassword();
-    });
+
+    cancelBtn.addEventListener('touchend', (e) => { e.preventDefault(); e.stopPropagation(); document.getElementById('password-box').remove(); });
+    cancelBtn.addEventListener('click', () => document.getElementById('password-box').remove());
+
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkPassword(); });
 
     setTimeout(() => input.focus(), 100);
-}
-
+ }
 function checkPassword() {
     const input = document.getElementById('password-input');
     const error = document.getElementById('password-error');
