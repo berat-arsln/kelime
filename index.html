@@ -24,8 +24,9 @@
   window.firebaseRef = ref;
   window.firebaseSet = set;
   window.firebaseGet = get;
+  window.firebaseReady = true;
     </script>
-    <title>KELİME OYUNU - V17.1  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V17.2  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -1036,7 +1037,7 @@ async function syncToFirebase(data) {
         const db = window.firebaseDB;
         const ref = window.firebaseRef;
         const set = window.firebaseSet;
-        if (!db) return;
+        if (!db || !window.firebaseReady) return;
         await set(ref(db, 'istatistik'), data);
     } catch(err) {
         console.error('Firebase kayıt hatası:', err);
@@ -1048,7 +1049,7 @@ async function loadFromFirebase() {
         const db = window.firebaseDB;
         const ref = window.firebaseRef;
         const get = window.firebaseGet;
-        if (!db) return;
+        if (!db || !window.firebaseReady) return;
         const snapshot = await get(ref(db, 'istatistik'));
         if (snapshot.exists()) {
             const data = snapshot.val();
@@ -1376,7 +1377,8 @@ function initResetButtons() {
 buildKeyboard();
 loadDictionary().then(() => {
     initGame();
-}).catch(() => {
+}).catch((err) => {
+    console.error('Yükleme hatası:', err);
     initGame();
 });
 </script>
