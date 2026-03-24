@@ -26,7 +26,7 @@
   window.firebaseGet = get;
   window.firebaseReady = true;
     </script>
-    <title>KELİME OYUNU - V17.2  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V17.3  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -297,8 +297,8 @@
     }
 
     .tile { 
-        width: clamp(43px, 12vw, 63px);
-        height: clamp(43px, 12vw, 63px);
+        width: clamp(50px, 14vw, 70px);
+        height: clamp(50px, 14vw, 70px);
         background-color: var(--tile-empty); 
         border-radius: 8px; 
         display: flex; 
@@ -1063,15 +1063,18 @@ async function loadFromFirebase() {
 }
 function openStatsModal(postGame = false) {
     isPostGame = postGame;
+    if (!postGame) activeProfile = "GENEL";
     const playBtn = document.getElementById('stats-play-btn');
     playBtn.style.display = postGame ? 'none' : 'block';
+    renderTabs();
+    renderStatsContent();
+    document.getElementById('stats-modal').style.display = 'flex';
     loadFromFirebase().then(() => {
         renderTabs();
         renderStatsContent();
         initResetButtons();
     });
-    document.getElementById('stats-modal').style.display = 'flex';
-}
+    }
 
 function closeStatsModal() {
     document.getElementById('stats-modal').style.display = 'none';
