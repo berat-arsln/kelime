@@ -25,7 +25,7 @@
   window.firebaseSet = set;
   window.firebaseGet = get;
     </script>
-    <title>KELİME OYUNU - V16.6  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V16.7  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -1005,7 +1005,7 @@ function playLoseSound() {
 // ===== SES SİSTEMİ SONU =====
     
 // ===== İSTATİSTİK SİSTEMİ =====
-let activeProfile = "GENEL";
+let activeProfile = "1GENEL";
 function updateProfileLabel() {
     const label = document.getElementById('active-profile-label');
     if (label) label.innerText = '👤 ' + activeProfile;
@@ -1070,7 +1070,7 @@ function closeStatsModal() {
     if (isPostGame) {
         isPostGame = false;
         lastGuessNumber = null;
-        activeProfile = "GENEL";
+        activeProfile = "1GENEL";
         updateProfileLabel();
         resetGame();
     }
