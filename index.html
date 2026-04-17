@@ -38,7 +38,7 @@
         window.firebaseReady = false;
     });
     </script>
-    <title>KELİME OYUNU - V18.2  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V18.3  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -381,32 +381,75 @@
     }
 
     .kb-row { 
-        display: flex; 
-        justify-content: center; 
-        gap: 4px; 
-        margin-bottom: 6px; 
-    }
+    display: flex; 
+    justify-content: center; 
+    gap: 6px; 
+    margin-bottom: 8px; 
+}
 
-    .key { 
-        background-color: var(--key-bg); 
-        border: none; 
-        border-radius: 5px; 
-        color: white; 
-        font-size: clamp(0.7rem, 2.5vw, 1rem);
-        font-weight: bold; 
-        height: clamp(38px, 6vh, 50px);
-        flex: 0.9; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        cursor: pointer;
-    }
+.key { 
+    background: linear-gradient(180deg, #6b6b6b 0%, #4a4a4a 50%, #3a3a3a 100%);
+    border: none;
+    border-radius: 8px;
+    color: white; 
+    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+    font-weight: 900;
+    font-family: 'Arial Black', sans-serif;
+    height: clamp(42px, 7vh, 58px);
+    flex: 0.9; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #222, 0 5px 3px rgba(0,0,0,0.5);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    transition: transform 0.08s, box-shadow 0.08s;
+    position: relative;
+}
+        
+        /* BÜYÜTÜLMÜŞ SİLME TUŞU */
+        .key.delete {
+            background-color: #3d3d3d;
+            flex: 2; /* Diğer tuşların 2 katı genişlikte olur */
+            color: #ffcc00; /* İkon rengi sarımsı */
+            font-size: 24px; /* İkon boyutu biraz daha büyük */
+        }
 
-    .key.wide { flex: 2; background-color: #5d5d61; }
-    .key[data-state="correct"] { background-color: var(--correct); }
-    .key[data-state="present"] { background-color: var(--present); }
-    .key[data-state="absent"] { opacity: 0.2; background-color: #222; }
+.key:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #222, 0 2px 2px rgba(0,0,0,0.4);
+}
 
+.key.wide { 
+    flex: 1.8;
+    background: linear-gradient(180deg, #7a6a00 0%, #5a4e00 50%, #3a3300 100%);
+    box-shadow: 0 4px 0 #1a1500, 0 5px 3px rgba(0,0,0,0.5);
+    font-size: clamp(0.65rem, 2vw, 0.85rem);
+}
+
+.key[data-state="correct"] { 
+    background: linear-gradient(180deg, #56c5b3 0%, #46b5a3 50%, #36a593 100%);
+    box-shadow: 0 4px 0 #1a6b60, 0 5px 3px rgba(0,0,0,0.4);
+}
+
+.key[data-state="present"] { 
+    background: linear-gradient(180deg, #f9b94b 0%, #f2a93b 50%, #e2992b 100%);
+    box-shadow: 0 4px 0 #8a5500, 0 5px 3px rgba(0,0,0,0.4);
+}
+
+.key[data-state="absent"] { 
+    opacity: 0.35;
+    background: linear-gradient(180deg, #333 0%, #222 100%);
+    box-shadow: 0 4px 0 #111, 0 5px 3px rgba(0,0,0,0.4);
+}
+
+#keyboard { 
+    background: #2a2a2a;
+    padding: 10px 6px calc(10px + env(safe-area-inset-bottom)) 6px;
+    width: 100%;
+    flex-shrink: 0;
+    box-shadow: 0 30px 0 30px #2a2a2a;
+}
     /* MODAL */
     #game-modal {
         display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -526,7 +569,7 @@
      <!--- Ayarlar kısmı sürüm numarası --->
             <div style="display:flex; justify-content:center; position:relative; width:100%;">
     <button onclick="closeSettingsModal()" style="background:#555; color:white; border:none; border-radius:10px; padding:12px 30px; font-weight:bold; font-size:1rem; cursor:pointer;">KAPAT</button>
-    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.2</div>
+    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.3</div>
             </div>
     </div>
     </div>
