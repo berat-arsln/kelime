@@ -38,7 +38,7 @@
         window.firebaseReady = false;
     });
     </script>
-    <title>KELİME OYUNU - V18.3  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V18.4  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -569,7 +569,7 @@
      <!--- Ayarlar kısmı sürüm numarası --->
             <div style="display:flex; justify-content:center; position:relative; width:100%;">
     <button onclick="closeSettingsModal()" style="background:#555; color:white; border:none; border-radius:10px; padding:12px 30px; font-weight:bold; font-size:1rem; cursor:pointer;">KAPAT</button>
-    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.3</div>
+    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.4</div>
             </div>
     </div>
     </div>
@@ -856,7 +856,7 @@ function closeModal() {
 const keys = [
     ['Q','W','E','R','T','Y','U','I','O','P','Ğ','Ü'],
     ['A','S','D','F','G','H','J','K','L','Ş','İ'],
-    ['Z','X','C','V','B','N','M','Ö','Ç','SİL']
+    ['Z','X','C','V','B','N','M','Ö','Ç','⌫']
 ];
 
 function buildKeyboard() {
@@ -867,7 +867,7 @@ function buildKeyboard() {
         rowDiv.className = 'kb-row';
         row.forEach(key => {
             const btn = document.createElement('button');
-            btn.className = 'key' + (key === 'SİL' ? ' wide' : '');
+            btn.className = 'key' + (key === '⌫' ? ' wide' : '');
             btn.innerText = key;
             btn.onclick = () => handleInput(key);
             rowDiv.appendChild(btn);
@@ -879,7 +879,7 @@ function buildKeyboard() {
 function handleInput(val) {
     if(isDone) return;
     
-    if(val === 'SİL') {
+    if(val ==='⌫') {
         const currentTileElement = document.getElementById('t' + curTile);
         
         // 1. Durum: Eğer şu anki kutuda bir harf varsa, sadece harfi sil, yerinde kal.
