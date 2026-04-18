@@ -38,7 +38,7 @@
         window.firebaseReady = false;
     });
     </script>
-    <title>KELİME OYUNU - V18.5  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V18.6  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -406,14 +406,6 @@
     transition: transform 0.08s, box-shadow 0.08s;
     position: relative;
 }
-        
-        /* BÜYÜTÜLMÜŞ SİLME TUŞU */
-        .key.delete {
-            background-color: #3d3d3d;
-            flex: 2; /* Diğer tuşların 2 katı genişlikte olur */
-            color: #ffcc00; /* İkon rengi sarımsı */
-            font-size: 24px; /* İkon boyutu biraz daha büyük */
-        }
 
 .key:active {
     transform: translateY(3px);
@@ -424,7 +416,7 @@
     flex: 1.8;
     background: linear-gradient(180deg, #7a6a00 0%, #5a4e00 50%, #3a3300 100%);
     box-shadow: 0 4px 0 #1a1500, 0 5px 3px rgba(0,0,0,0.5);
-    font-size: clamp(0.65rem, 2vw, 0.85rem);
+    font-size: clamp(1.4rem, 2vw, 0.85rem);
 }
 
 .key[data-state="correct"] { 
@@ -569,7 +561,7 @@
      <!--- Ayarlar kısmı sürüm numarası --->
             <div style="display:flex; justify-content:center; position:relative; width:100%;">
     <button onclick="closeSettingsModal()" style="background:#555; color:white; border:none; border-radius:10px; padding:12px 30px; font-weight:bold; font-size:1rem; cursor:pointer;">KAPAT</button>
-    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.5</div>
+    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.6</div>
             </div>
     </div>
     </div>
