@@ -38,7 +38,7 @@
         window.firebaseReady = false;
     });
     </script>
-    <title>KELİME OYUNU - V18.6  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V18.7  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -561,7 +561,7 @@
      <!--- Ayarlar kısmı sürüm numarası --->
             <div style="display:flex; justify-content:center; position:relative; width:100%;">
     <button onclick="closeSettingsModal()" style="background:#555; color:white; border:none; border-radius:10px; padding:12px 30px; font-weight:bold; font-size:1rem; cursor:pointer;">KAPAT</button>
-    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.6</div>
+    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.7</div>
             </div>
     </div>
     </div>
@@ -702,19 +702,48 @@ function showHint() {
     btn.style.cursor = "not-allowed";
 
     const chance = Math.random() * 100;
-    let textToShow = "";
 
     if (chance < 85) {
-        // %85 Laf Sokma
-        textToShow = roastMessages[Math.floor(Math.random() * roastMessages.length)];
+        // %85 şanssız
+        const sözler = [
+            "Şansın yetmedi, bir dahaki sefere!",
+            "Bugün talih seninle değil...",
+            "Olmadı, tekrar dene!",
+            "Kısmet değilmiş, devam et!",
+            "Şans kapıyı çalmadı, üzgünüm!"
+        ];
+        showToast(sözler[Math.floor(Math.random() * sözler.length)]);
     } else {
-        // %15 Gerçek İpucu
-        const meaning = dictionary[target] || "İpucu bulunamadı!";
-        textToShow = "İPUCU: " + meaning.substring(0, 45) + "...";
-    }
+        // %15 ipucu — klavyeden 3 harf sil
+        const yasakHarfler = ['Q', 'W', 'X'];
+        const hedefHarfler = target.split('');
+        
+        // Silinebilecek harfler: hedef kelimede yok, yasak değil, henüz silinmemiş
+        const silinebilir = [];
+        document.querySelectorAll('.key').forEach(k => {
+            const harf = k.innerText.trim();
+            if (
+                harf.length === 1 &&
+                !yasakHarfler.includes(harf) &&
+                !hedefHarfler.includes(harf) &&
+                k.getAttribute('data-state') !== 'absent' &&
+                k.getAttribute('data-state') !== 'correct' &&
+                k.getAttribute('data-state') !== 'present'
+            ) {
+                silinebilir.push(k);
+            }
+        });
 
-    // ARTIK MESAJI BURADAN GÖNDERİYORUZ
-    showToast(textToShow);
+        // Karıştır ve ilk 3'ü al
+        silinebilir.sort(() => Math.random() - 0.5);
+        const secilenler = silinebilir.slice(0, 3);
+
+        secilenler.forEach(k => {
+            k.setAttribute('data-state', 'absent');
+        });
+
+        showToast("3 yanlış harf elendi! 🎯");
+    }
 }
 
 // BU YENİ FONKSİYONU DA KODUN EN ALTINA EKLE
