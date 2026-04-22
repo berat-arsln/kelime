@@ -38,7 +38,7 @@
         window.firebaseReady = false;
     });
     </script>
-    <title>KELİME OYUNU - V18.8  (Sözlük Destekli)</title>
+    <title>KELİME OYUNU - V18.9  (Sözlük Destekli)</title>
     <style>
         :root {
             --bg: #1a0b45;
@@ -561,7 +561,7 @@
      <!--- Ayarlar kısmı sürüm numarası --->
             <div style="display:flex; justify-content:center; position:relative; width:100%;">
     <button onclick="closeSettingsModal()" style="background:#555; color:white; border:none; border-radius:10px; padding:12px 30px; font-weight:bold; font-size:1rem; cursor:pointer;">KAPAT</button>
-    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.8</div>
+    <div style="color:#555; font-size:0.7rem; position:absolute; right:0; bottom:0; line-height:2.5;">v18.9</div>
             </div>
     </div>
     </div>
@@ -1031,7 +1031,20 @@ function showPasswordPrompt(onSuccess) {
 function checkPassword() {
     const input = document.getElementById('password-input');
     const error = document.getElementById('password-error');
-    if (input.value === '82732') {
+    const encoder = new TextEncoder();
+const data = encoder.encode(input.value);
+crypto.subtle.digest('SHA-256', data).then(hash => {
+    const hashHex = Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2, '0')).join('');
+    if (hashHex === "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3") {
+        document.getElementById('password-box').remove();
+        if (window._passwordCallback) window._passwordCallback();
+    } else {
+        document.getElementById('password-error').innerText = 'Yanlış şifre!';
+        input.value = '';
+        input.focus();
+    }
+});
         document.getElementById('password-box').remove();
         if (window._passwordCallback) window._passwordCallback();
     } else {
