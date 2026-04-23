@@ -1045,15 +1045,8 @@ crypto.subtle.digest('SHA-256', data).then(hash => {
         input.focus();
     }
 });
-        document.getElementById('password-box').remove();
-        if (window._passwordCallback) window._passwordCallback();
-    } else {
-        error.innerText = 'Yanlış şifre!';
-        input.value = '';
-        input.focus();
-    }
 }
-// ===== ŞİFRE EKRANI SONU =====
+// ===== ŞİFRE EKRANI SONU =======
     
     // ===== AYARLAR SİSTEMİ =====
 let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
