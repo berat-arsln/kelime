@@ -1036,7 +1036,7 @@ const data = encoder.encode(input.value);
 crypto.subtle.digest('SHA-256', data).then(hash => {
     const hashHex = Array.from(new Uint8Array(hash))
         .map(b => b.toString(16).padStart(2, '0')).join('');
-    if (hashHex === "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3") {
+    if (hashHex === "976bc77e304c0bdca569771f24bf44d1b2336f931852d56099c08d287aecf6fb") {
         document.getElementById('password-box').remove();
         if (window._passwordCallback) window._passwordCallback();
     } else {
