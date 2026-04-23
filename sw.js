@@ -7,7 +7,6 @@ const assets = [
   './sounds/kaybet.mp3'
 ];
 
-
 // Dosyaları yükleme (Cache) - Güncellenmiş Halı
 self.addEventListener('install', e => {
   e.waitUntil(
